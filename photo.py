@@ -4,6 +4,8 @@ import pygame
 import time
 import cv2
 import numpy as np
+from qrcodes import qr
+# import flask_prog
 
 
 WIDTH = 1280  # ширина
@@ -101,11 +103,11 @@ def number_of_screen1():
 
 
 def number_of_screen2():
-    screen.fill('white')
+    screen.fill(WHITE)
     ret, frame = camera.read()
     frame2 = np.rot90(frame)
     gray = cv2.cvtColor(frame2, cv2.COLORMAP_RAINBOW)
-    frame2 = cv2.resize(gray, [420, 640])
+    frame2 = cv2.resize(gray, (420, 640))
     screen.blit(pygame.surfarray.make_surface(frame2), (320, 150))
     pygame.display.update()
 
@@ -122,8 +124,12 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
-            number_of_screen = 2
-            new = True
+            if number_of_screen == 1:
+                number_of_screen = 2
+                new = True
+            if number_of_screen == 3:
+                number_of_screen = 1
+                transfer = True
     if number_of_screen == 1:
         if transfer:
             screen.fill(WHITE)
@@ -134,7 +140,7 @@ while running:
         pygame.display.update()
     elif number_of_screen == 2:
         if new:
-            counter = 61
+            counter = 1750
             counter_photo = -1
             new = False
             flag_mouse2 = False
@@ -155,35 +161,49 @@ while running:
             ret, frame = camera.read()
             frame2 = np.rot90(frame)
             gray = cv2.cvtColor(frame2, cv2.COLORMAP_RAINBOW)
-            frame2 = cv2.resize(gray, [420, 640])
+            frame2 = cv2.resize(gray, (420, 640))
             screen.blit(pygame.surfarray.make_surface(frame2), (320, 150))
             pygame.display.update()
             if flag_mouse2:
                 break
+            elif counter > 0:
+                counter -= 1
+                # screen.fill('white')
+                # print_text(str(counter), 100, 10, 50, 'black')
+            elif counter == 0:
+                transfer = True
+                number_of_screen = 1
+                break
         if flag_mouse2:
             counter_photo += 1
             draw_number()
-            # time.sleep(0.5)
-        elif counter > 0:
-            counter -= 1
-            # print_text(str(counter), 600, 80, 40, (0, 0, 0)) убрать, проверка
-            # pygame.display.update()
-            time.sleep(1)
         if counter_photo == 5:
-            frame = cv2.resize(frame, [640, 420])
+            frame = cv2.resize(frame, (640, 420))
             frame = cv2.flip(frame, 1)
             cv2.imwrite('photos/image-1.png', frame)
             number_of_screen = 3
+            qr_new = True
             flag_mouse2 = False
-        if counter == 0:
-            transfer = True
-            number_of_screen = 1
+            new3 = True
         '''if button1.click():
             transfer = True
             number_of_screen = 1'''
     elif number_of_screen == 3:
+        if new3:
+            counter = 1750
+        counter -= 1
         screen.fill(WHITE)
         img = pygame.image.load('photos/image-1.png')
-        screen.blit(img, (320, 150))
+        if qr_new:
+            qrc = pygame.image.load(qr())
+            qr_new = False
+        screen.blit(qrc, (870, 200))
+        screen.blit(img, (150, 150))
         # screen.fill(pygame.Color('red'), pygame.Rect(350, 150, 600, 450))
         pygame.display.update()
+        if counter == 0:
+            number_of_screen = 1
+            transfer = True
+        '''flask_prog.start()
+        time.sleep(40)
+        flask_prog.close()'''
