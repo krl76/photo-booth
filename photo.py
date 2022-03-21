@@ -4,7 +4,6 @@ import pygame
 import time
 import cv2
 import numpy as np
-# from videocam import cam
 
 
 WIDTH = 1280  # ширина
