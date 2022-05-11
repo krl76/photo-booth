@@ -4,7 +4,7 @@ import pygame
 import time
 import cv2
 import numpy as np
-from qrcodes import qr
+from qrcodes import generate_qr
 # import flask_prog
 
 
@@ -24,7 +24,6 @@ number_of_screen = 1  # номер окна
 camera = cv2.VideoCapture(0)  # иницилизация камеры
 press_button = False
 pygame.time.set_timer(pygame.USEREVENT, 1000)
-start = True
 transfer = True
 number_img = [pygame.image.load('5_5.png'), pygame.image.load('4_5.png'), pygame.image.load('3_5.png'),
               pygame.image.load('2_5.png'), pygame.image.load('1_5.png'), pygame.image.load('0_5.png')]
@@ -71,8 +70,7 @@ def print_text(message, x, y, font_size, font_color, font_type='YakumoPreschoolH
     screen.blit(text, (x, y))
 
 
-def draw_number():
-    global counter_photo, WIDTH, HEIGHT
+def draw_number(counter_photo, WIDTH, HEIGHT):
     width = 512
     height = 512
     surf_img_number = pygame.Surface((WIDTH, HEIGHT))
@@ -86,23 +84,15 @@ def draw_number():
         height -= 25
         pygame.display.update()
         time.sleep(0.03)
-        number_of_screen2()
+        output_camera()
 
 
-def number_of_screen1():
-    global start
-    start = False
-    print_text('Добро пожаловать в фото-будку!', 310, 250, 50, (0, 0, 0))
-    print_text('Нажмите на любую часть экрана, чтобы продолжить!', 100, 320, 50, (0, 0, 0))
-    pygame.display.update()
-    while True:
-        for event_number1 in pygame.event.get():
-            if event_number1.type == pygame.MOUSEBUTTONDOWN:
-                number_of_screen2(61)
-                break
+def clear_screen():
+    screen.fill(WHITE)
+    pygame.display.flip()
 
 
-def number_of_screen2():
+def output_camera():
     screen.fill(WHITE)
     ret, frame = camera.read()
     frame2 = np.rot90(frame)
@@ -112,10 +102,84 @@ def number_of_screen2():
     pygame.display.update()
 
 
-def number_of_screen3():
-    screen.fill(WHITE)
-    screen.fill(pygame.Color('red'), pygame.Rect(350, 150, 600, 450))
+def main_screen():
+    global transfer
+    if transfer:
+        clear_screen()
+        transfer = False
+    print_text('Добро пожаловать в фото-будку!', 310, 250, 50, (0, 0, 0))
+    print_text('Нажмите на любую часть экрана, чтобы продолжить!', 100, 320, 50, (0, 0, 0))
     pygame.display.update()
+
+
+def vebcam_screen():
+    global new, transfer, number_of_screen, qr_new, new3, flag_mouse2, counter_photo
+    if new:
+        counter = 1750
+        counter_photo = -1
+        new = False
+        flag_mouse2 = False
+        '''button = True
+        button1 = Button(300, 100)
+        button2 = Button(300, 100)'''
+        clear_screen()
+    '''if button:
+        button1.draw(30, 350, 'Вернуться назад', 30, (0, 0, 0), 8, 3)
+        button2.draw(965, 340, 'Сделать снимок', 30, (0, 0, 0), 8, 3)'''
+    while True:
+        for event1 in pygame.event.get():
+            if event1.type == pygame.MOUSEBUTTONDOWN:
+                flag_mouse2 = True
+                break
+        ret, frame = camera.read()
+        frame2 = np.rot90(frame)
+        gray = cv2.cvtColor(frame2, cv2.COLORMAP_RAINBOW)
+        frame2 = cv2.resize(gray, (420, 640))
+        screen.blit(pygame.surfarray.make_surface(frame2), (320, 150))
+        pygame.display.update()
+        if flag_mouse2:
+            break
+        elif counter > 0:
+            counter -= 1
+            # screen.fill('white')
+            # print_text(str(counter), 100, 10, 50, 'black')
+        elif counter == 0:
+            transfer = True
+            number_of_screen = 1
+            break
+    if flag_mouse2:
+        counter_photo += 1
+        draw_number(counter_photo, WIDTH, HEIGHT)
+    if counter_photo == 5:
+        frame = cv2.resize(frame, (640, 420))
+        frame = cv2.flip(frame, 1)
+        cv2.imwrite('photos/image-1.png', frame)
+        number_of_screen = 3
+        qr_new = True
+        flag_mouse2 = False
+        new3 = True
+    '''if button1.click():
+        transfer = True
+        number_of_screen = 1'''
+
+
+def photo_output_screen():
+    global new3, qr_new, number_of_screen, transfer, qrc
+    if new3:
+        counter = 1750
+    counter -= 1
+    screen.fill(WHITE)
+    img = pygame.image.load('photos/image-1.png')
+    if qr_new:
+        qrc = pygame.image.load(generate_qr())
+        qr_new = False
+    screen.blit(qrc, (870, 200))
+    screen.blit(img, (150, 150))
+    # screen.fill(pygame.Color('red'), pygame.Rect(350, 150, 600, 450))
+    pygame.display.update()
+    if counter == 0:
+        number_of_screen = 1
+        transfer = True
 
 
 while running:
@@ -131,79 +195,11 @@ while running:
                 number_of_screen = 1
                 transfer = True
     if number_of_screen == 1:
-        if transfer:
-            screen.fill(WHITE)
-            pygame.display.flip()
-            transfer = False
-        print_text('Добро пожаловать в фото-будку!', 310, 250, 50, (0, 0, 0))
-        print_text('Нажмите на любую часть экрана, чтобы продолжить!', 100, 320, 50, (0, 0, 0))
-        pygame.display.update()
+        main_screen()
     elif number_of_screen == 2:
-        if new:
-            counter = 1750
-            counter_photo = -1
-            new = False
-            flag_mouse2 = False
-            '''button = True
-            button1 = Button(300, 100)
-            button2 = Button(300, 100)'''
-            screen.fill(WHITE)
-            # pygame.draw.rect(screen, (133, 133, 133), (350, 150, 600, 450))
-            pygame.display.update()
-        '''if button:
-            button1.draw(30, 350, 'Вернуться назад', 30, (0, 0, 0), 8, 3)
-            button2.draw(965, 340, 'Сделать снимок', 30, (0, 0, 0), 8, 3)'''
-        while True:
-            for event1 in pygame.event.get():
-                if event1.type == pygame.MOUSEBUTTONDOWN:
-                    flag_mouse2 = True
-                    break
-            ret, frame = camera.read()
-            frame2 = np.rot90(frame)
-            gray = cv2.cvtColor(frame2, cv2.COLORMAP_RAINBOW)
-            frame2 = cv2.resize(gray, (420, 640))
-            screen.blit(pygame.surfarray.make_surface(frame2), (320, 150))
-            pygame.display.update()
-            if flag_mouse2:
-                break
-            elif counter > 0:
-                counter -= 1
-                # screen.fill('white')
-                # print_text(str(counter), 100, 10, 50, 'black')
-            elif counter == 0:
-                transfer = True
-                number_of_screen = 1
-                break
-        if flag_mouse2:
-            counter_photo += 1
-            draw_number()
-        if counter_photo == 5:
-            frame = cv2.resize(frame, (640, 420))
-            frame = cv2.flip(frame, 1)
-            cv2.imwrite('photos/image-1.png', frame)
-            number_of_screen = 3
-            qr_new = True
-            flag_mouse2 = False
-            new3 = True
-        '''if button1.click():
-            transfer = True
-            number_of_screen = 1'''
+        vebcam_screen()
     elif number_of_screen == 3:
-        if new3:
-            counter = 1750
-        counter -= 1
-        screen.fill(WHITE)
-        img = pygame.image.load('photos/image-1.png')
-        if qr_new:
-            qrc = pygame.image.load(qr())
-            qr_new = False
-        screen.blit(qrc, (870, 200))
-        screen.blit(img, (150, 150))
-        # screen.fill(pygame.Color('red'), pygame.Rect(350, 150, 600, 450))
-        pygame.display.update()
-        if counter == 0:
-            number_of_screen = 1
-            transfer = True
+        photo_output_screen()
         '''flask_prog.start()
         time.sleep(40)
         flask_prog.close()'''
