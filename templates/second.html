@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Photobooth</title>
     <link rel="shortcut icon" href="/static/data/icon.png" type="image/png">
+    <script type="text/javascript" src="static/filesaver.js"></script>
     <style>
         @font-face {
          font-family: 'YakumoPreschoolHand';
@@ -47,6 +48,17 @@
         var context = canvas.getContext('2d')
         snap.addEventListener('click', function(){
             context.drawImage(video, 0, 0, 640, 480);
+            var utf8 = atob(canvas.toDataURL('image/png').split(',')[1]);
+            function base64toblob(base64){
+                var utf8 = atob(base64),
+                array = [];
+                //---
+                for(var i = 0, j = utf8.length; i < j; i++)
+                array.push(utf8.charCodeAt(i));
+                //---
+                return(new Blob([new Uint8Array(array)], {type: 'image/png'}));
+            }
+            saveAs(base64toblob(canvas.toDataURL('image/png').split(',')[1]), 'image_from_camera.png');
         });
     </script>
 </body>
