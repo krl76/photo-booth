@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Photobooth</title>
+    <link rel="shortcut icon" href="/static/data/icon.png" type="image/png">
     <style>
         @font-face {
          font-family: 'YakumoPreschoolHand';
@@ -14,11 +15,14 @@
         .text {
         vertical-align: middle;
         text-align: center;
-        font-size: 60px;
+        font-size: 55px;
         }
    </style>
 </head>
-<body>
-    <center><h1 class="text">Добро пожаловать в фото-будку!<br>Нажмите в любую часть экрана чтобы продолжить!</h1></center>
+<body onClick="window.location.href='/camera'">
+    <div class="text">
+        <h1 style="margin-top: 220px">Добро пожаловать в фото-будку!</h1>
+        <h1>Нажмите на текст, чтобы продолжить!</h1>
+    </div>
 </body>
 </html>

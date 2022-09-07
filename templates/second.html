@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Photobooth</title>
+    <link rel="shortcut icon" href="/static/data/icon.png" type="image/png">
+    <style>
+        @font-face {
+         font-family: 'YakumoPreschoolHand';
+         src: url('static/data/YakumoPreschoolHand.ttf');
+        }
+        h1 {
+        font-family: 'YakumoPreschoolHand', 'Comic Sans MS';
+        }
+   </style>
+</head>
+<body>
+    <div class="video-wrap">
+        <center><video id="video" playsinline autoplay></video></center>
+    </div>
+    <div class="controller">
+        <button id="snap">Захват</button>
+    </div>
+    <canvas id="canvas" width="640" height="480"></canvas>
+    <script>
+        const video = document.getElementById('video');
+        const errorMsgElement = document.getElementById('span#ErrorMsg');
+        const constraints = {
+            video:{
+                width: 1280, height: 720
+            }
+        };
+        async function init(){
+            try{
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                handleSuccess(stream)
+            }
+            catch(e){
+                errorMsgElement.innerHTML = 'navigator.getUserMedia.error:${e.toString()}';
+            }
+        }
+        function handleSuccess(stream){
+            window.stream = stream;
+            video.srcObject = stream;
+        }
+        init();
+        var context = canvas.getContext('2d')
+        snap.addEventListener('click', function(){
+            context.drawImage(video, 0, 0, 640, 480);
+        });
+    </script>
+</body>
+</html>

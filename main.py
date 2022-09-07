@@ -1,17 +1,16 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for, request
 
 app = Flask(__name__, static_folder="static")
 
 
-@app.route("/")
+@app.route("/", methods = ["GET"])
 def first():
-    # return 'hello'
     return render_template('main.html')
 
 
 @app.route("/camera")
 def second():
-    return "show camera"
+    return render_template('second.html')
 
 
 @app.route("/send")
