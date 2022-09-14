@@ -13,6 +13,13 @@
         h1 {
         font-family: 'YakumoPreschoolHand', 'Comic Sans MS';
         }
+        video{
+        transform: scaleX(-1);
+        -o-transform: scaleX(-1);
+        -ms-transform: scaleX(-1);
+        -moz-transform: scaleX(-1);
+        -webkit-transform: scaleX(-1);
+        }
    </style>
 </head>
 <body>
@@ -20,46 +27,9 @@
         <center><video id="video" playsinline autoplay></video></center>
     </div>
     <div class="controller">
-        <button id="snap">Захват</button>
+        <button id="snap" onClick="window.location.href='/send'">Захват</button>
     </div>
-    <canvas id="canvas" width="640" height="480"></canvas>
-    <script>
-        const video = document.getElementById('video');
-        const errorMsgElement = document.getElementById('span#ErrorMsg');
-        const constraints = {
-            video:{
-                width: 1280, height: 720
-            }
-        };
-        async function init(){
-            try{
-                const stream = await navigator.mediaDevices.getUserMedia(constraints);
-                handleSuccess(stream)
-            }
-            catch(e){
-                errorMsgElement.innerHTML = 'navigator.getUserMedia.error:${e.toString()}';
-            }
-        }
-        function handleSuccess(stream){
-            window.stream = stream;
-            video.srcObject = stream;
-        }
-        init();
-        var context = canvas.getContext('2d')
-        snap.addEventListener('click', function(){
-            context.drawImage(video, 0, 0, 640, 480);
-            var utf8 = atob(canvas.toDataURL('image/png').split(',')[1]);
-            function base64toblob(base64){
-                var utf8 = atob(base64),
-                array = [];
-                //---
-                for(var i = 0, j = utf8.length; i < j; i++)
-                array.push(utf8.charCodeAt(i));
-                //---
-                return(new Blob([new Uint8Array(array)], {type: 'image/png'}));
-            }
-            saveAs(base64toblob(canvas.toDataURL('image/png').split(',')[1]), 'image_from_camera.png');
-        });
-    </script>
+    <canvas id="canvas" width="1280" height="720"></canvas>
+    <script type="text/javascript" src="static/webcam.js"></script>
 </body>
 </html>
