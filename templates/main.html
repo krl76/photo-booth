@@ -15,14 +15,20 @@
         .text {
         vertical-align: middle;
         text-align: center;
-        font-size: 55px;
+        font-size: 300%;
         }
-        body {background: url(/static/data/bg1.png);}
+        html {height: 100%;}
+        body {
+        margin: 0;
+        height: 70%;
+        background: url(static/data/bg1.png);
+        background-size: cover;
+        }
    </style>
 </head>
 <body onClick="window.location.href='/camera'">
     <div class="text">
-        <h1 style="margin-top: 220px">Добро пожаловать в фото-будку!</h1>
+        <h1 style="margin-top: 12%">Добро пожаловать в фото-будку!</h1>
         <h1>Нажмите на текст, чтобы продолжить!</h1>
     </div>
 </body>
