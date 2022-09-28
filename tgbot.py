@@ -20,7 +20,7 @@ async def process_start_command(message: types.Message):
                         reply_markup=markup)
 
 
-@dp.message_handler(commands=['Инструкция'])
+@dp.message_handler(text=['Инструкция'])
 async def process_start_command(message: types.Message):
     await message.reply('''1. Сфотографируйтесь в фотобудке школы №1357.
 2. Отправьте код, указанный на экране.''',
