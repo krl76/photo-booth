@@ -20,5 +20,12 @@ async def process_start_command(message: types.Message):
                         reply_markup=markup)
 
 
+@dp.message_handler(commands=['Инструкция'])
+async def process_start_command(message: types.Message):
+    await message.reply('''1. Сфотографируйтесь в фотобудке школы №1357.
+2. Отправьте код, указанный на экране.''',
+                        reply_markup=markup)
+
+
 if __name__ == '__main__':
     executor.start_polling(dp)
