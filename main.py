@@ -16,10 +16,13 @@ def second():
 
 @app.route("/send", methods=["POST"])
 def third():
-    img = request.form["image"]
-    img_encode = base64.b64encode(img)
-    with open('static/images/image.png') as file:
-        file.write(img_encode)
+    with open('static/images/image.txt', 'w') as file:
+        img = request.form['image']
+        file.write(img)
+    with open('static/images/image.txt', 'rb') as file:
+        with open('static/images/image.png', 'wb') as file2:
+            img_b64 = file.read()
+            file2.write(base64.b64decode(img_b64))
     # with open('static/images/image.txt', 'rb') as file:
     #     with open('static/images/image.png', 'wb') as file2:
     #         img_b64 = file.read()

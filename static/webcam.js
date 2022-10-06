@@ -28,14 +28,15 @@ context.scale(-1, 1);
 snap.addEventListener('click', function(){
     context.drawImage(video, 0, 0, 1280, 720);
     console.log(canvas.toDataURL('image/png').split(',')[1])
-    $.post('/send', {"image": canvas.toDataURL('image/png').split(',')[1]}, function(data){
-	alert(data);
-});
+    $.post("/send", {"image": canvas.toDataURL('image/png').split(',')[1]}, function(data){
+	alert(image);
+    });
 //    $.ajax({
-//      url: "/third.html",
-//      method: "post",
-//      data: {"image": canvas.toDataURL('image/png').split(',')[1]}
+//        url: "/send",
+//        method: "POST",
+//        data: {"image": canvas.toDataURL('image/png').split(',')[1]}
 //      context: document.body
+//        }
 //    }).done(function() {
 //      $(this).addClass("done");
 //    });
