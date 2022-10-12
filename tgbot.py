@@ -3,6 +3,9 @@ from aiogram.dispatcher import Dispatcher
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.utils import executor
 
+from db_data import db_session
+from db_data.photoes import Photo
+
 TOKEN = '5436507493:AAFNMNTR9qJGWJ9YcBEYsYy-blIiHb07hr8'
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
@@ -20,11 +23,21 @@ async def process_start_command(message: types.Message):
                         reply_markup=markup)
 
 
-@dp.message_handler(text=['Инструкция'])
+@dp.message_handler()
 async def process_start_command(message: types.Message):
-    await message.reply('''1. Сфотографируйтесь в фотобудке школы №1357.
+    if message.text == 'Инструкция':
+        await message.reply('''1. Сфотографируйтесь в фотобудке школы №1357.
 2. Отправьте код, указанный на экране.''',
-                        reply_markup=markup)
+                            reply_markup=markup)
+    else:
+        db_session.global_init('db/photo-booth.sqlite')
+        db_sess = db_session.create_session()
+        code = db_sess.query(Photo).filter(Photo.code == message.text).first()
+        if code:
+            await message.reply('''Тип фотка''',
+                                reply_markup=markup)
+        else:
+            await message.reply('''Неверный код''')
 
 
 if __name__ == '__main__':
