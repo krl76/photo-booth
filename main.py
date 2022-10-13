@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, request
 import base64
 from time import sleep
+import uuid
 
 app = Flask(__name__, static_folder="static")
 
@@ -29,22 +30,21 @@ def second():
 #         return redirect(url_for('send'))
 
 
-@app.route("/send", methods=["GET", "POST"])
-def third():
-    if request.method == 'POST':
+@app.route("/send", methods=["POST"])
+def upload_image():
+    try:
+        file_name = uuid.uuid1()
+        path = f'static/images/{file_name}.png'
         with open('static/images/image.txt', 'w') as file:
             img = request.form['image']
             file.write(img)
         with open('static/images/image.txt', 'rb') as file:
-            with open('static/images/image.png', 'wb') as file2:
+            with open(path, 'wb') as file2:
                 img_b64 = file.read()
                 file2.write(base64.b64decode(img_b64))
-    # with open('static/images/image.txt', 'rb') as file:
-    #     with open('static/images/image.png', 'wb') as file2:
-    #         img_b64 = file.read()
-    #         file2.write(base64.b64decode(img_b64))
-    sleep(1)
-    return render_template('third.html')
+    except Exception:
+        return json({'error': 'При загрузке произошла ошибка'})
+    return json({'success': 'ok'})
 
 
 if __name__ == '__main__':
