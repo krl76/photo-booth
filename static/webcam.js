@@ -28,9 +28,11 @@ context.scale(-1, 1);
 snap.addEventListener('click', function(){
     context.drawImage(video, 0, 0, 1280, 720);
     console.log(canvas.toDataURL('image/png').split(',')[1])
-    $.post("/send", {"image": canvas.toDataURL('image/png').split(',')[1]}, function(data){
+    $.post("/send",
+     {"image": canvas.toDataURL('image/png').split(',')[1]},
+      function(data) {
 	alert(image);
-    });
+    }).fail(alert('Error'));
 //    $.ajax({
 //        url: "/send",
 //        method: "POST",
