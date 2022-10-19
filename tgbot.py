@@ -4,7 +4,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.utils import executor
 
 from db_data import db_session
-from db_data.photoes import Photo
+from db_data.photos import Photo
 
 TOKEN = '5436507493:AAFNMNTR9qJGWJ9YcBEYsYy-blIiHb07hr8'
 bot = Bot(token=TOKEN)
