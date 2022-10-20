@@ -34,5 +34,6 @@ snap.addEventListener('click', function(){
         var json = $.parseJSON(data);
         document.getElementById('camera').innerHTML = '<img src="' + json.img + '">'
         document.getElementById('snap').innerHTML = ''
+        document.getElementById('img').innerHTML = ''
     });
 });
