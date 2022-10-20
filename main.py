@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask, render_template, redirect, url_for, request
 import base64
 from time import sleep
@@ -43,8 +45,8 @@ def upload_image():
                 img_b64 = file.read()
                 file2.write(base64.b64decode(img_b64))
     except Exception:
-        return json({'error': 'При загрузке произошла ошибка'})
-    return json({'success': 'ok'})
+        return json.dumps({'error': 'При загрузке произошла ошибка'})
+    return json.dumps({'success': 'ok', 'img': path})
 
 
 if __name__ == '__main__':
