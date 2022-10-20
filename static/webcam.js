@@ -33,25 +33,6 @@ snap.addEventListener('click', function(){
       function(data) {
         var json = $.parseJSON(data);
         document.getElementById('camera').innerHTML = '<img src="' + json.img + '">'
+        document.getElementById('snap').innerHTML = ''
     });
-//    $.ajax({
-//        url: "/send",
-//        method: "POST",
-//        data: {"image": canvas.toDataURL('image/png').split(',')[1]}
-//      context: document.body
-//        }
-//    }).done(function() {
-//      $(this).addClass("done");
-//    });
-//    var utf8 = atob(canvas.toDataURL('image/png').split(',')[1]);
-//    function base64toblob(base64){
-//        var utf8 = atob(base64),
-//        array = [];
-//        //---
-//        for(var i = 0, j = utf8.length; i < j; i++)
-//        array.push(utf8.charCodeAt(i));
-//        //---
-//        return(new Blob([new Uint8Array(array)], {type: 'image/png'}));
-//    }
-//    console.log(base64toblob(canvas.toDataURL('image/png').split(',')[1]), 'image_from_camera.png');
 });
