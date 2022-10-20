@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Photobooth</title>
     <link rel="shortcut icon" href="/static/data/icon.png" type="image/png">
-    <script type="text/javascript" src="static/filesaver.js"></script>
     <style>
         @font-face {
          font-family: 'YakumoPreschoolHand';
@@ -29,7 +28,9 @@
     <div class="controller">
         <button id="snap">Захват</button>
     </div>
-    <canvas id="canvas" width="1280" height="720"></canvas>
+    <div id="img">
+        <canvas id="canvas" width="1280" height="720"></canvas>
+    </div>
     <script type="text/javascript" src="static/webcam.js"></script>
 </body>
 </html>
