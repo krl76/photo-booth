@@ -2,7 +2,6 @@ import json
 import qrcode
 from flask import Flask, render_template, redirect, url_for, request
 import base64
-from time import sleep
 import uuid
 
 app = Flask(__name__, static_folder="static")
@@ -41,10 +40,10 @@ def qr_code():
         tgbot_name = 'photobooth1357_bot'
         tgbot_link = f'https://t.me/{tgbot_name}'
         tgbot_qr = qrcode.make(tgbot_link)
-        path_tgbot_qr = '/static/images/telegram-qrcode.png'
-        tgbot_qr.save('/static/images/telegram-qrcode.png')
+        path_tgbot_qr = 'static/images/telegram-qrcode.png'
+        tgbot_qr.save(path_tgbot_qr)
     except Exception:
-        return json.dumps({'error': 'При загрузке произошла ошибка'})
+        return json.dumps({'error': 'Loading has been error'})
     return json.dumps({'success': 'ok', 'tglink': path_tgbot_qr})
 
 

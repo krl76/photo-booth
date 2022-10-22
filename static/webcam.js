@@ -32,8 +32,8 @@ snap.addEventListener('click', function(){
      {"image": canvas.toDataURL('image/png').split(',')[1]},
       function(data) {
         var json = $.parseJSON(data);
-        document.getElementById('camera').innerHTML = '<img src="' + json.img + '">'
-        document.getElementById('snap').innerHTML = ''
+        document.getElementById('camera').innerHTML = '<center><img src="' + json.img + '"></center>'
+        document.getElementById('button').innerHTML = ''
         document.getElementById('img').innerHTML = ''
     });
 });

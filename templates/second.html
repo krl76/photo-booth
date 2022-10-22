@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Photobooth</title>
     <link rel="shortcut icon" href="/static/data/icon.png" type="image/png">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
         @font-face {
          font-family: 'YakumoPreschoolHand';
@@ -25,12 +26,13 @@
     <div class="video-wrap" id="camera">
         <center><video id="video" playsinline autoplay></video></center>
     </div>
-    <div class="controller">
-        <button id="snap">Захват</button>
+    <div id="button" class="controller">
+        <button type="button" class="btn btn-primary btn-lg btn-block" id="snap" style="margin-top: 2%">Сделать фотографию :)</button>
     </div>
     <div id="img" style="opacity: 0">
         <canvas id="canvas" width="1280" height="720"></canvas>
     </div>
+    <h1 id="text_tg"></h1>
     <div id="qr-code">
     </div>
     <script type="text/javascript" src="static/webcam.js"></script>
