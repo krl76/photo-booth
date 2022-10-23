@@ -30,7 +30,7 @@ def upload_image():
                 img_b64 = file.read()
                 file2.write(base64.b64decode(img_b64))
     except Exception:
-        return json.dumps({'error': 'При загрузке произошла ошибка'})
+        return json.dumps({'error': 'Loading has been error'})
     return json.dumps({'success': 'ok', 'img': path})
 
 
