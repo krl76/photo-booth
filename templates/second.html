@@ -20,6 +20,15 @@
         -moz-transform: scaleX(-1);
         -webkit-transform: scaleX(-1);
         }
+        .controller .btn {
+        background: url(/static/data/default button.png);
+        display: inline-block;
+        cursor: pointer;
+        transition: 0.2s;
+        }
+        .controller .btn:hover {
+        background: url(/static/data/check_button.png);
+        }
    </style>
 </head>
 <body>
@@ -27,12 +36,11 @@
         <center><video id="video" playsinline autoplay></video></center>
     </div>
     <div id="button" class="controller">
-        <button type="button" class="btn btn-primary btn-lg btn-block" id="snap" style="margin-top: 2%">Сделать фотографию :)</button>
-        <!-- для начала попробовать сделать кнопку меньше через padding, далее сделать через фотошоп классную кнопку в виде картинки -->
+        <a href="#" class="btn" id="snap"></a>
+<!--        <center><input type="image" id="snap" class="btn" src="/static/data/default button.png" style="width: 7%; height: 7%"></center>-->
+<!--        <button type="button" class="btn btn-primary btn-lg btn-block" id="snap" style="margin-top: 2%">Сделать фотографию :)</button>-->
     </div>
     <div id="img" style="opacity: 0">
-        <!-- попробовать через width and height уменьшить размер див блока, чисто в теории должно помочь, дабы решить проблему с тем, что появляются ползунки прокрутки + попробовать
-сделать все размеры не через проценты, а через vw(view width) and vh(view height) -->
         <canvas id="canvas" width="1280" height="720"></canvas>
     </div>
     <h1 id="text_tg"></h1>
