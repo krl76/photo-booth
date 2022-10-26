@@ -35,5 +35,6 @@ snap.addEventListener('click', function(){
         document.getElementById('camera').innerHTML = '<center><img src="' + json.img + '"></center>'
         document.getElementById('button').innerHTML = ''
         document.getElementById('img').innerHTML = ''
+        document.getElementById('text_tg').innerHTML = '<center><h1>Ссылки на наших ботов: телеграмм. Указав номер: ' + json.code + ', вы сможете скачать вашу фотографию</h1></center>'
     });
 });

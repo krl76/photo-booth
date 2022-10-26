@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Photobooth</title>
     <link rel="shortcut icon" href="/static/data/icon.png" type="image/png">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
         @font-face {
          font-family: 'YakumoPreschoolHand';
@@ -20,23 +19,22 @@
         -moz-transform: scaleX(-1);
         -webkit-transform: scaleX(-1);
         }
-        .controller .btn {
-        background: url(/static/data/default button.png);
-        display: inline-block;
+        .controller .img-btn1 {
         cursor: pointer;
-        transition: 0.2s;
+        transition-duration: 0.2s;
         }
-        .controller .btn:hover {
-        background: url(/static/data/check_button.png);
+        .controller .img-btn1:hover {
+        filter: brightness(80%);
+        transition-duration: 0.2s;
         }
    </style>
 </head>
 <body>
     <div class="video-wrap" id="camera">
-        <center><video id="video" playsinline autoplay></video></center>
+        <center><video id="video" style="margin-top: 2%" playsinline autoplay></video></center>
     </div>
     <div id="button" class="controller">
-        <a href="#" class="btn" id="snap"></a>
+        <center><img src="static/data/default button.png" style="margin-top: 1%; width: 7%; height: 7%;" class="img-btn1" id="snap"></center>
 <!--        <center><input type="image" id="snap" class="btn" src="/static/data/default button.png" style="width: 7%; height: 7%"></center>-->
 <!--        <button type="button" class="btn btn-primary btn-lg btn-block" id="snap" style="margin-top: 2%">Сделать фотографию :)</button>-->
     </div>

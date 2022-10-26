@@ -3,6 +3,8 @@ from aiogram.dispatcher import Dispatcher
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.utils import executor
 
+import sqlite3
+
 from db_data import db_session
 from db_data.photos import Photo
 
@@ -34,8 +36,11 @@ async def process_start_command(message: types.Message):
         db_sess = db_session.create_session()
         code = db_sess.query(Photo).filter(Photo.code == message.text).first()
         if code:
-            await message.reply('''Тип фотка''',
-                                reply_markup=markup)
+            connection = sqlite3.connect('db/photo-booth.sqlite')
+            cursor = connection.cursor()
+            cursor.execute(f'SELECT photo FROM photos WHERE code = {message.text}')
+            path = cursor.fetchone()[0]
+            await bot.send_photo(chat_id=message.chat.id, photo=open(path, 'rb'))
         else:
             await message.reply('''Неверный код''')
 
