@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Photobooth</title>
+    <link rel="shortcut icon" href="/static/data/icon.png" type="image/png">
+    <style>
+        @font-face {
+         font-family: 'YakumoPreschoolHand';
+         src: url('static/data/YakumoPreschoolHand.ttf');
+        }
+        h1 {
+        font-family: 'YakumoPreschoolHand', 'Comic Sans MS';
+        }
+        .text {
+        vertical-align: middle;
+        text-align: center;
+        font-size: 300%;
+        }
+        html {height: 100%;}
+        body {
+        margin: 0;
+        height: 70%;
+        background: url(static/data/bg1.png);
+        background-size: cover;
+        }
+   </style>
+</head>
+<body onClick="window.location.href='/camera'">
+    <div class="text">
+        <h1 style="margin-top: 12%">Добро пожаловать в фото-будку!</h1>
+        <h1>Нажмите на текст, чтобы продолжить!</h1>
+    </div>
+</body>
+</html>
