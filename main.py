@@ -6,10 +6,8 @@ import uuid
 from db_data import db_session
 from db_data.photos import Photo
 from random import choices
-import datetime as dt
 
 app = Flask(__name__, static_folder="static")
-time_flag = True
 
 @app.route("/")
 def greetings_screen():
