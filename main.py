@@ -6,10 +6,11 @@ import uuid
 from db_data import db_session
 from db_data.photos import Photo
 from random import choices
-import datetime as dt
+import sqlite3
+import datetime
 
 app = Flask(__name__, static_folder="static")
-time_flag = True
+
 
 @app.route("/")
 def greetings_screen():
@@ -36,7 +37,7 @@ def upload_image():
         db = db_session.create_session()
         photo = Photo()
         photo.photo = path
-        generate_code = ''.join(choices(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'], k=6))
+        generate_code = session()
         photo.code = generate_code
         db.add(photo)
         db.commit()
@@ -63,6 +64,19 @@ def run_db():
     app.run()
 
 
+def session():
+    generate_code = ''.join(choices(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'], k=6))
+    connection = sqlite3.connect('db/photo-booth.sqlite')
+    cursor = connection.cursor()
+    cursor.execute(f'SELECT code FROM photos')
+    codes = cursor.fetchone()
+    if generate_code in codes:
+        return session()
+    else:
+        return generate_code
+
+
 if __name__ == '__main__':
     run_db()
     app.run(debug=True)
+    # github
