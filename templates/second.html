@@ -55,24 +55,56 @@
         top: 7%;
         right: 11%;
         }
+        .photo {
+        position: absolute;
+        margin-top: 4%;
+        margin-left: 2%;
+        }
+        .photo .photo_2 {
+        width: 1200px;
+        height: 600px;
+        }
+        .tg {
+        position: absolute;
+        margin-top: 15%;
+        right: 7%;
+        }
+        .sentence_tg {
+        position: absolute;
+        margin-top: 35%
+        }
+        .sentence_code {
+        position: absolute;
+        right: 12.5%;
+        margin-top: 8%;
+        }
+        .code_tg {
+        color: red;
+        }
    </style>
 </head>
 <body>
     <div class="go_back" id="arrow">
         <img src="static/data/arrow.png" class="img-btn1" id="back">
     </div>
-    <div class="video-wrap" id="camera">
-        <center><video id="video" style="margin-top: 2%" playsinline autoplay></video></center>
-    </div>
+    <form>
+        <div class="video-wrap" id="camera">
+            <center><video id="video" style="margin-top: 2%" playsinline autoplay></video></center>
+        </div>
+    </form>
     <div id="button" class="controller">
         <center><img src="static/data/default button.png" class="img-btn2" id="snap"></center>
     </div>
     <div class="fake-img" id="img">
         <center><canvas id="canvas" width="1280" height="720"></canvas></center>
     </div>
-    <h1 id="text_tg"></h1>
-    <div id="qr-code">
+    <div class="sentence_tg">
+        <h1 id="text_tg"></h1>
     </div>
+    <div class="sentence_code">
+        <h1 class="code_tg" id="code"></h1>
+    </div>
+    <div class="tg" id="qr-code"></div>
     <script type="text/javascript" src="static/webcam.js"></script>
     <script type="text/javascript" src="static/qrcode.js"></script>
 </body>

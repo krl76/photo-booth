@@ -80,4 +80,3 @@ def generate_code():
 if __name__ == '__main__':
     run_db()
     app.run(debug=True)
-    # github
