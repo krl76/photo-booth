@@ -38,7 +38,7 @@ async def process_start_command(message: types.Message):
         if code:
             connection = sqlite3.connect('db/photo-booth.sqlite')
             cursor = connection.cursor()
-            cursor.execute(f'SELECT photo FROM photos WHERE code = {message.text}')
+            cursor.execute(f'SELECT image FROM photos WHERE code = {message.text}')
             path = cursor.fetchone()[0]
             await bot.send_photo(chat_id=message.chat.id, photo=open(path, 'rb'))
         else:
