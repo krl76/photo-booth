@@ -5,6 +5,6 @@ snap.addEventListener('click', function(){
     $.get("/qr",
         function(data) {
             var json = $.parseJSON(data);
-            document.getElementById('qr-code').innerHTML = '<center><img src="' + json.tglink + '" style="width: 15%; height: 15%"></center>'
+            document.getElementById('qr-code').innerHTML = '<center><img src="' + json.tglink + '" style="width: 70%; height: 70%"></center>'
     });
 });
