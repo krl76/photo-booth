@@ -71,6 +71,7 @@ def generate_code():
     cursor = connection.cursor()
     cursor.execute(f'SELECT code FROM photos')
     codes = cursor.fetchall()
+    connection.close()
     if (code,) in codes:
         return generate_code()
     else:

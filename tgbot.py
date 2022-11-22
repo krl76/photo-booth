@@ -41,6 +41,7 @@ async def process_start_command(message: types.Message):
             cursor.execute(f'SELECT image FROM photos WHERE code = {message.text}')
             path = cursor.fetchone()[0]
             await bot.send_photo(chat_id=message.chat.id, photo=open(path, 'rb'))
+            connection.close()
         else:
             await message.reply('''Неверный код''')
 
