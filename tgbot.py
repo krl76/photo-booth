@@ -14,10 +14,18 @@ TOKEN = '5436507493:AAFNMNTR9qJGWJ9YcBEYsYy-blIiHb07hr8'
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
 
+ADMIN_PASSWORD = 'admin1357'
+
 button_instruction = KeyboardButton('Инструкция')
 
-markup = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-markup.add(button_instruction)
+button_statistics = KeyboardButton('Статистика')
+
+markup_user = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+markup_user.add(button_instruction)
+
+markup_admin = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+markup_admin.add(button_instruction)
+markup_admin.add(button_statistics)
 
 
 @dp.message_handler(commands=['start'])
@@ -37,23 +45,37 @@ async def process_start_command(message: types.Message):
     connection.close()
     await message.reply('''Добро пожаловать!)
 Для получения фотографии отправьте код, указанный на экране фотобудки.''',
-                        reply_markup=markup)
+                        reply_markup=markup_user)
 
 
 @dp.message_handler()
 async def process_start_command(message: types.Message):
+    user_id = message.chat.id
+    connection = sqlite3.connect('db/photo-booth.sqlite')
+    cursor = connection.cursor()
+    status = int(cursor.execute(f'''SELECT status FROM users WHERE user_id="{user_id}"''').fetchone()[0])
+    markup = markup_admin if status == 1 else markup_user
     if message.text == 'Инструкция':
-        await message.reply('''1. Сфотографируйтесь в фотобудке школы №1357.
-2. Отправьте код, указанный на экране.''',
+        await message.reply(f'''1. Сфотографируйтесь в фотобудке школы №1357.
+2. Отправьте код, указанный на экране. {status}''',
+                            reply_markup=markup)
+    elif message.text == ADMIN_PASSWORD:
+        if status == 1:
+            await message.reply('''Вы уже админ.''',
+                                reply_markup=markup_admin)
+        else:
+            new_status = cursor.execute(f'''UPDATE users SET status=1 WHERE user_id="{user_id}"''').fetchall()
+            connection.commit()
+            await message.reply('''Теперь вы админ.''',
+                                reply_markup=markup_admin)
+    elif message.text == 'Статистика':
+        await message.reply('''Типа какие-то данные :)''',
                             reply_markup=markup)
     else:
         db_session.global_init('db/photo-booth.sqlite')
         session = db_session.create_session()
-        user_id = message.chat.id
         code = session.query(Photo).filter(Photo.code == message.text).first()
         if code:
-            connection = sqlite3.connect('db/photo-booth.sqlite')
-            cursor = connection.cursor()
             user = cursor.execute(f'''UPDATE users SET count_photo=count_photo+1 WHERE user_id="{user_id}"''').fetchall()
             last_using = cursor.execute(f'''UPDATE users SET date_last_using="{datetime.datetime.now()}" WHERE user_id="{user_id}"''').fetchall()
             connection.commit()
@@ -65,9 +87,10 @@ async def process_start_command(message: types.Message):
             session.add(photo)
             session.commit()
             await bot.send_photo(chat_id=message.chat.id, photo=open(path, 'rb'))
-            connection.close()
         else:
-            await message.reply('''Неверный код''')
+            await message.reply('''Неверный код''',
+                            reply_markup=markup)
+    connection.close()
 
 
 if __name__ == '__main__':
