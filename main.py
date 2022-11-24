@@ -37,7 +37,7 @@ def upload_image():
         session = db_session.create_session()
         code = generate_code()
         photo = Photo(
-            image=path,
+            photo=path,
             code=code,
             time=datetime.datetime.now()
         )
@@ -69,12 +69,12 @@ def generate_code():
     code = ''.join(choices(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'], k=6))
     connection = sqlite3.connect('db/photo-booth.sqlite')
     cursor = connection.cursor()
-    cursor.execute(f'SELECT code FROM photos')
-    codes = cursor.fetchall()
-    connection.close()
+    codes = cursor.execute(f'''SELECT code FROM photos''').fetchall()
     if (code,) in codes:
+        connection.close()
         return generate_code()
     else:
+        connection.close()
         return code
 
 

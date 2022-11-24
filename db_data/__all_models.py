@@ -1,3 +1,3 @@
 from .photos import Photo
-from .photochat import PhotoChat
+from .photos_users import PhotoUser
 from .users import User
