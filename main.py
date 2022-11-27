@@ -4,7 +4,7 @@ from flask import Flask, render_template, redirect, url_for, request
 import base64
 import uuid
 from db_data import db_session
-from db_data.__all_models import Photo
+from db_data.__all_models import Photo, Statistics
 from random import choices
 import sqlite3
 import datetime
@@ -42,6 +42,12 @@ def upload_image():
             time=datetime.datetime.now()
         )
         session.add(photo)
+        statistics = Statistics(
+            photo=path,
+            time=datetime.datetime.now(),
+            count_send=0
+        )
+        session.add(statistics)
         session.commit()
     except Exception:
         return json.dumps({'error': 'Loading has been error'})
