@@ -3,11 +3,14 @@ import qrcode
 from flask import Flask, render_template, redirect, url_for, request
 import base64
 import uuid
+
 from db_data import db_session
 from db_data.__all_models import Photo, Statistics
-from random import choices
 import sqlite3
+from clear_db import delete_photos, delete_statistics
+from random import choices
 import datetime
+import schedule
 
 app = Flask(__name__, static_folder="static")
 
@@ -69,6 +72,8 @@ def qr_code():
 
 def run_db():
     db_session.global_init('db/photo-booth.sqlite')
+    schedule.every(1).minutes.do(delete_photos)
+    schedule.every().day.at('00:00').do(delete_statistics)
 
 
 def generate_code():
@@ -87,3 +92,5 @@ def generate_code():
 if __name__ == '__main__':
     run_db()
     app.run(debug=True)
+    while True:
+        schedule.run_pending()

@@ -2,7 +2,7 @@ import sqlite3
 import datetime
 
 
-def delete_photo():
+def delete_photos():
     connection = sqlite3.connect('db/photo-booth.sqlite')
     cursor = connection.cursor()
     delete = cursor.execute(
@@ -11,5 +11,10 @@ def delete_photo():
     connection.close()
 
 
-if __name__ == '__main__':
-    delete_photo()
+def delete_statistics():
+    connection = sqlite3.connect('db/photo-booth.sqlite')
+    cursor = connection.cursor()
+    delete = cursor.execute(
+        f'''DELETE FROM statistics WHERE time<"{datetime.datetime.now() - datetime.timedelta(weeks=1)}"''').fetchall()
+    connection.commit()
+    connection.close()
