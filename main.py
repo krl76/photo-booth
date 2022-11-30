@@ -1,4 +1,6 @@
 import json
+import time
+
 import qrcode
 from flask import Flask, render_template, redirect, url_for, request
 import base64
@@ -72,8 +74,6 @@ def qr_code():
 
 def run_db():
     db_session.global_init('db/photo-booth.sqlite')
-    schedule.every(1).minutes.do(delete_photos)
-    schedule.every().day.at('00:00').do(delete_statistics)
 
 
 def generate_code():
@@ -90,7 +90,10 @@ def generate_code():
 
 
 if __name__ == '__main__':
+    schedule.every(1).minutes.do(delete_photos)
+    schedule.every().day.at('00:00').do(delete_statistics)
     run_db()
     app.run(debug=True)
     while True:
         schedule.run_pending()
+        time.sleep(1)
