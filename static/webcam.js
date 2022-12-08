@@ -34,8 +34,8 @@ snap.addEventListener('click', function(){
       function(data) {
         var json = $.parseJSON(data);
         document.querySelector('form').innerHTML = '<div class="photo"><center><img src="' + json.img + '"class="photo_2"></center></div>'
-        document.getElementById('text_tg').innerHTML = '<center><h1>Через нашего телеграм бота вы сможете скачать вашу фотографию по указанному номеру</h1></center>'
-        document.getElementById('code').innerHTML = '<h1>' + json.code + '</h1>'
+        document.getElementById('text_tg').innerHTML = '<center><h1 style="font-size: 3vw;">Через нашего телеграм бота вы сможете скачать вашу фотографию по указанному номеру</h1></center>'
+        document.getElementById('code').innerHTML = '<h1 style="font-size: 4vw;">' + json.code + '</h1>'
         document.getElementById('button').innerHTML = ''
         document.getElementById('img').innerHTML = ''
     });
