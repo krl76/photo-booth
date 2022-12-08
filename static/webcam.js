@@ -41,5 +41,5 @@ snap.addEventListener('click', function(){
     });
 });
 back.addEventListener('click', function(){
-        window.close();
+        history.back();
 });
