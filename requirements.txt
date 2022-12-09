@@ -5,3 +5,4 @@ qrcode~=7.3.1
 Pillow~=9.2.0
 uuid~=1.30
 schedule~=1.1.0
+requests~=2.28.1
