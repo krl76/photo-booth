@@ -18,9 +18,10 @@ function idleTimer() {
     time = time + 1;
     if (time > 2) {
         //здесь нужное вам действие на простой
-        var isHere = confirm("Вы бездействовали на странице более 3х минут, желаете продолжить?");
-        if (!(isHere)) {
+        /*var isHere = confirm("Вы бездействовали на странице более 3х минут, желаете продолжить?");*/
+        history.back();
+        /*if (!(isHere)) {
             history.back();
-        }
+        }*/
     }
 }
