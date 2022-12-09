@@ -1,9 +1,3 @@
-/*transition.addEventListener('click', function(){
-    var childWindow = window.open('camera');
-    setTimeout(function () {
-    childWindow.close();
-    }, 180000);
-});*/
 let time = 0;
 $(document).ready(function () {
     //здесь функция срабатывает раз в минуту, можно настроить как вам удобно
