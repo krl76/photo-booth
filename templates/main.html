@@ -24,6 +24,16 @@
         background: url(static/data/bg1.png);
         background-size: cover;
         }
+        .text_news {
+        position: absolute;
+        width: 35vw;
+        height: 35vh;
+        left: 5vw;
+        border:
+            0.4vw
+            groove
+            grey;
+        }
    </style>
 </head>
 <body id="transition" onClick="window.location.href='/camera'">
@@ -31,5 +41,8 @@
         <h1 style="margin-top: 25vh">Добро пожаловать в фото-будку!</h1>
         <h1>Нажмите на текст, чтобы продолжить!</h1>
     </div>
+    <div class="text_news" id="news_text"></div>
+    <!--<div class="photo" id="attachments"></div>-->
+    <script type="text/javascript" src="static/parser.js"></script>
 </body>
 </html>

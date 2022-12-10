@@ -2,6 +2,7 @@ import json
 import time
 
 import qrcode
+import requests
 from flask import Flask, render_template, redirect, url_for, request
 import base64
 import uuid
@@ -70,6 +71,26 @@ def qr_code():
     except Exception:
         return json.dumps({'error': 'Loading has been error'})
     return json.dumps({'success': 'ok', 'tglink': path_tgbot_qr})
+
+
+@app.route("/parser", methods=["GET"])
+def get_posts():
+    try:
+        token = '959d5e65959d5e65959d5e651c968c8f919959d959d5e65f60ec3723e409a0e81b86762'
+        version = 5.131
+        domain = 'gbou1357'
+        response = requests.get('https://api.vk.com/method/wall.get',
+                                params={
+                                    'access_token': token,
+                                    'v': version,
+                                    'domain': domain,
+                                    'count': 10
+                                }
+                                )
+        data = response.json()['response']['items']
+    except Exception:
+        return json.dumps({'error': 'Loading has been error'})
+    return json.dumps({'success': 'ok', 'text': data[0]['text'], 'attachments': data[0]['attachments'][0]['photo']['sizes'][2]['url']})
 
 
 def run_db():
