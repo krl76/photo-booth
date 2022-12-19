@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Photobooth</title>
     <link rel="shortcut icon" href="/static/data/icon.png" type="image/png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <style>
         @font-face {
          font-family: 'YakumoPreschoolHand';
@@ -24,16 +26,6 @@
         background: url(static/data/bg1.png);
         background-size: cover;
         }
-        .text_news {
-        position: absolute;
-        width: 35vw;
-        height: 35vh;
-        left: 5vw;
-        border:
-            0.4vw
-            groove
-            grey;
-        }
    </style>
 </head>
 <body id="transition" onClick="window.location.href='/camera'">
@@ -41,8 +33,6 @@
         <h1 style="margin-top: 25vh">Добро пожаловать в фото-будку!</h1>
         <h1>Нажмите на текст, чтобы продолжить!</h1>
     </div>
-    <div class="text_news" id="news_text"></div>
-    <!--<div class="photo" id="attachments"></div>-->
     <script type="text/javascript" src="static/parser.js"></script>
 </body>
 </html>

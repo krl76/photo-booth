@@ -113,6 +113,7 @@ def generate_code():
 if __name__ == '__main__':
     schedule.every(1).minutes.do(delete_photos)
     schedule.every().day.at('00:00').do(delete_statistics)
+    # schedule.every(60).minutes.do(get_posts) # надо понять будет ли работать
     run_db()
     app.run(debug=True)
     while True:
