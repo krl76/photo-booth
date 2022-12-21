@@ -1,0 +1,34 @@
+@font-face {
+font-family: 'YakumoPreschoolHand';
+src: url('/static/data/YakumoPreschoolHand.ttf');
+}
+h1 {
+font-family: 'YakumoPreschoolHand', 'Comic Sans MS';
+}
+.text {
+vertical-align: middle;
+text-align: center;
+font-size: 3vw;
+}
+html {
+height: 100vh;
+}
+body {
+margin: 0;
+height: 70vh;
+background: url('/static/data/bg1.png');
+background-size: cover;
+}
+
+$carousel-control-width:             15%;
+
+$carousel-indicator-width:           30px;
+$carousel-indicator-height:          3px;
+$carousel-indicator-hit-area-height: 10px;
+$carousel-indicator-spacer:          3px;
+
+$carousel-caption-width:             70%;
+$carousel-caption-padding-y:         1.25rem;
+$carousel-caption-spacer:            1.25rem;
+
+$carousel-control-icon-width:        2rem;
