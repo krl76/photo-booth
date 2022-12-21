@@ -20,14 +20,18 @@ button_instruction = KeyboardButton('Инструкция')
 
 button_statistics_day = KeyboardButton('Статистика за день')
 button_statistics_week = KeyboardButton('Статистика за неделю')
+button_send_message = KeyboardButton('Рассылка')
+button_admin_password = KeyboardButton('Пароль для админки')
 
 markup_user = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
 markup_user.add(button_instruction)
 
 markup_admin = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+markup_admin.add(button_instruction)
 markup_admin.add(button_statistics_day)
 markup_admin.add(button_statistics_week)
-markup_admin.add(button_instruction)
+markup_admin.add(button_send_message)
+markup_admin.add(button_admin_password)
 
 
 def new_user(user_id):
@@ -108,31 +112,31 @@ def make_statictics_week():
 
 
 @dp.message_handler(commands=['start'])
-async def process_start_command(message: types.Message):
+async def start_command(message: types.Message):
     user_id = message.chat.id
     nnu = new_user(user_id)
     await message.reply('''Добро пожаловать!)
-Для получения фотографии отправьте код, указанный на экране фотобудки.''',
+Для получения фотографии отправьте код, указанный на экране фотобудки''',
                         reply_markup=markup_user)
 
 
 @dp.message_handler()
-async def process_start_command(message: types.Message):
+async def other_command(message: types.Message):
     user_id = message.chat.id
     nu = new_user(user_id)
     st = status(user_id)
     markup = markup_admin if st == 1 else markup_user
     if message.text == 'Инструкция':
-        await message.reply(f'''1. Сфотографируйтесь в фотобудке школы №1357.
-2. Отправьте код, указанный на экране.''',
+        await message.reply(f'''1. Сфотографируйтесь в фотобудке школы №1357
+2. Отправьте код, указанный на экране''',
                             reply_markup=markup)
     elif message.text == ADMIN_PASSWORD:
         if st == 1:
-            await message.reply('''Вы уже админ.''',
+            await message.reply('''Вы уже админ''',
                                 reply_markup=markup_admin)
         else:
             ns = new_status(user_id)
-            await message.reply('''Теперь вы админ.''',
+            await message.reply('''Теперь вы админ''',
                                 reply_markup=markup_admin)
     elif message.text == 'Статистика за день':
         if st == 1:
@@ -140,11 +144,31 @@ async def process_start_command(message: types.Message):
             await message.reply(f'''Количество сделанных фотографий: {s[0]}
 Количество отправленных фотографий: {s[1]}''',
                                 reply_markup=markup)
+        else:
+            await message.reply('''Некорректный запрос''',
+                                reply_markup=markup)
     elif message.text == 'Статистика за неделю':
         if st == 1:
             s = make_statictics_week()
             await message.reply(f'''Количество сделанных фотографий: {s[0]}
 Количество отправленных фотографий: {s[1]}''',
+                                reply_markup=markup)
+        else:
+            await message.reply('''Некорректный запрос''',
+                                reply_markup=markup)
+    elif message.text == 'Пароль для админки':
+        if st == 1:
+            await message.reply(f'''{ADMIN_PASSWORD}''',
+                                reply_markup=markup)
+        else:
+            await message.reply('''Некорректный запрос''',
+                                reply_markup=markup)
+    elif message.text == 'Рассылка':
+        if st == 1:
+            await message.reply(f'''Напишите текст для рассылки (Пока что не работает)''',
+                                reply_markup=markup)
+        else:
+            await message.reply('''Некорректный запрос''',
                                 reply_markup=markup)
     elif message.text.isdigit():
         code = message.text
@@ -153,7 +177,7 @@ async def process_start_command(message: types.Message):
             await bot.send_photo(chat_id=user_id, photo=open(path, 'rb'))
         else:
             await message.reply('''Неверный код''',
-                            reply_markup=markup)
+                                reply_markup=markup)
     else:
         await message.reply('''Некорректный запрос''',
                             reply_markup=markup)
