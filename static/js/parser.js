@@ -4,6 +4,11 @@
 $.get("/parser",
         function(data) {
             var json = $.parseJSON(data);
-            document.getElementById('news_text').innerHTML = '<h1 style="font-size: 2vw">"' + json.text + '"</h1><img src="' + json.attachments + '" style="width: 33vw; height: 15vh; margin-left: 1vw; margin-top: -0.5vh">'
-            /*document.getElementById('attachments').innerHTML = '<img src="' + json.attachments + '" style="width: 36vw; height: 18vh">'*/
+            document.getElementById('img_1').innerHTML = '<img src="' + json.attachments_1 + '"class="d-block w-100"><div class="carousel-caption d-none d-md-block" id="text_1"><h5 style="color: ' + json.colour_1 + '; font-size: 0.7vw">' + json.text_1 + '</h5></div>'
+            document.getElementById('img_2').innerHTML = '<img src="' + json.attachments_2 + '"class="d-block w-100"><div class="carousel-caption d-none d-md-block" id="text_2"><h5 style="color: ' + json.colour_2 + '; font-size: 0.7vw">' + json.text_2 + '</h5></div>'
+            document.getElementById('img_3').innerHTML = '<img src="' + json.attachments_3 + '"class="d-block w-100"><div class="carousel-caption d-none d-md-block" id="text_3"><h5 style="color: ' + json.colour_3 + '; font-size: 0.7vw">' + json.text_3 + '</h5></div>'
+            /*console.log(json.text_1)
+            document.getElementById('text_1').innerHTML = '<h5>"' + json.text_1 + '"</h5>'
+            document.getElementById('text_2').innerHTML = '<h5>' + json.text_2 + '</h5>'
+            document.getElementById('text_3').innerHTML = '<h5>' + json.text_3 + '</h5>'*/
     });

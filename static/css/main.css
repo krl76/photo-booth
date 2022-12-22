@@ -19,16 +19,20 @@ height: 70vh;
 background: url('/static/data/bg1.png');
 background-size: cover;
 }
-
-$carousel-control-width:             15%;
-
-$carousel-indicator-width:           30px;
-$carousel-indicator-height:          3px;
-$carousel-indicator-hit-area-height: 10px;
-$carousel-indicator-spacer:          3px;
-
-$carousel-caption-width:             70%;
-$carousel-caption-padding-y:         1.25rem;
-$carousel-caption-spacer:            1.25rem;
-
-$carousel-control-icon-width:        2rem;
+.carousel {
+  height: 80vh;
+  width: 40vw;
+  margin-left: 30vw;
+  margin-top: 0.5vh;
+}
+/*.carousel-inner img {
+  height: 80vh;
+  width: 40vw;
+}*/
+.carousel-indicators li {
+  border-color: #808080;
+  background-color: #808080;
+}
+.carousel-indicators .active {
+  margin-top: -19vh;
+}
