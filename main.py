@@ -90,7 +90,9 @@ def get_posts():
         data = response.json()['response']['items']
     except Exception:
         return json.dumps({'error': 'Loading has been error'})
-    return json.dumps({'success': 'ok', 'text': data[0]['text'], 'attachments': data[0]['attachments'][0]['photo']['sizes'][2]['url']})
+    if 'attachments' in data[0]:
+        return json.dumps({'success': 'ok', 'text': data[0]['text'], 'attachments': data[0]['attachments'][0]['photo']['sizes'][2]['url']})
+    return json.dumps({'success': 'ok', 'text': data[0]['text'], 'attachments': 'static/data/1357_logo.jpg'})
 
 
 def run_db():
