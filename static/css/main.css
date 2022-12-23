@@ -36,3 +36,12 @@ background-size: cover;
 .carousel-indicators .active {
   margin-top: -19vh;
 }
+.carousel-control-prev {
+    margin-top: -15.2vh;
+}
+.carousel-control-next {
+    margin-top: -15vh
+}
+.visually-hidden {
+    border-color: #000;
+}

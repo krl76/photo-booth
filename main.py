@@ -102,7 +102,7 @@ def get_posts():
             posts[f'colour_{i + 1}'] = 'black'
     return json.dumps({'success': 'ok', 'text_1': posts['text_1'], 'attachments_1': posts['attachments_1'], 'colour_1': posts['colour_1'],
                        'text_2': posts['text_2'], 'attachments_2': posts['attachments_2'], 'colour_2': posts['colour_2'],
-                       'text_3': posts['text_3'], 'attachments_3': posts['attachments_3'], 'colour_3': posts['colour_3'],})
+                       'text_3': posts['text_3'], 'attachments_3': posts['attachments_3'], 'colour_3': posts['colour_3']})
 
 
 def run_db():
@@ -125,7 +125,7 @@ def generate_code():
 if __name__ == '__main__':
     schedule.every(1).minutes.do(delete_photos)
     schedule.every().day.at('00:00').do(delete_statistics)
-    # schedule.every(60).minutes.do(get_posts) # надо понять будет ли работать
+    schedule.every(60).minutes.do(get_posts)
     run_db()
     app.run(debug=True)
     while True:
