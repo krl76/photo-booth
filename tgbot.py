@@ -9,8 +9,11 @@ import datetime
 
 from db_data import db_session
 from db_data.__all_models import Photo, User, PhotoUser, Statistics
+from installer import TOKEN
 
-TOKEN = '5436507493:AAFNMNTR9qJGWJ9YcBEYsYy-blIiHb07hr8'
+
+TOKEN= '5436507493:AAFNMNTR9qJGWJ9YcBEYsYy-blIiHb07hr8'
+
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
 
@@ -96,8 +99,10 @@ def send_photo(user_id, code):
 def make_statictics_day():
     connection = sqlite3.connect('db/photo-booth.sqlite')
     cursor = connection.cursor()
-    make_day = len(cursor.execute(f'''SELECT photo FROM statistics WHERE time>"{datetime.datetime.now() - datetime.timedelta(days=1)}"''').fetchall())
-    send_day = len(cursor.execute(f'''SELECT photo FROM statistics WHERE time>"{datetime.datetime.now() - datetime.timedelta(days=1)}" AND count_send>0''').fetchall())
+    make_day = len(cursor.execute(
+        f'''SELECT photo FROM statistics WHERE time>"{datetime.datetime.now() - datetime.timedelta(days=1)}"''').fetchall())
+    send_day = len(cursor.execute(
+        f'''SELECT photo FROM statistics WHERE time>"{datetime.datetime.now() - datetime.timedelta(days=1)}" AND count_send>0''').fetchall())
     connection.close()
     return [make_day, send_day]
 
@@ -105,8 +110,10 @@ def make_statictics_day():
 def make_statictics_week():
     connection = sqlite3.connect('db/photo-booth.sqlite')
     cursor = connection.cursor()
-    make_week = len(cursor.execute(f'''SELECT photo FROM statistics WHERE time>"{datetime.datetime.now() - datetime.timedelta(weeks=1)}"''').fetchall())
-    send_week = len(cursor.execute(f'''SELECT photo FROM statistics WHERE time>"{datetime.datetime.now() - datetime.timedelta(weeks=1)}" AND count_send>0''').fetchall())
+    make_week = len(cursor.execute(
+        f'''SELECT photo FROM statistics WHERE time>"{datetime.datetime.now() - datetime.timedelta(weeks=1)}"''').fetchall())
+    send_week = len(cursor.execute(
+        f'''SELECT photo FROM statistics WHERE time>"{datetime.datetime.now() - datetime.timedelta(weeks=1)}" AND count_send>0''').fetchall())
     connection.close()
     return [make_week, send_week]
 
@@ -115,9 +122,11 @@ def make_statictics_week():
 async def start_command(message: types.Message):
     user_id = message.chat.id
     nnu = new_user(user_id)
+    st = status(user_id)
+    markup = markup_admin if st == 1 else markup_user
     await message.reply('''Добро пожаловать!)
 Для получения фотографии отправьте код, указанный на экране фотобудки''',
-                        reply_markup=markup_user)
+                        reply_markup=markup)
 
 
 @dp.message_handler()
@@ -182,6 +191,12 @@ async def other_command(message: types.Message):
         await message.reply('''Некорректный запрос''',
                             reply_markup=markup)
 
+#
+# @dp.message_handler()
+# async def reminder(chat=929513123):
+#     await bot.send_message(chat_id=chat, text='''Добрый день! Вы давно не пользовались нашей фотобудкой(
+# Напоминаем, что она расположена на первом этаже школы №1357-''')
+#
 
 if __name__ == '__main__':
     executor.start_polling(dp)
