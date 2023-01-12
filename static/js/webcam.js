@@ -28,15 +28,15 @@ var context = canvas.getContext('2d')
 context.translate(canvas.width, 0);
 context.scale(-1, 1);
 snap.addEventListener('click', function(){
-    document.getElementById('timer').innerHTML = '<img src="/static/data/5_5.png"class="img_timer" id="timer">';
+    document.getElementById('timer').innerHTML = '<img src="/static/data/5_5.png" style="width: 20vw; height: 35vh;" class="img_timer_2">';
     document.getElementById('button').innerHTML = '';
-    setTimeout(() => document.getElementById('timer').innerHTML = '<img src="/static/data/4_5.png"class="img_timer" id="timer">', 1000);
-    setTimeout(() => document.getElementById('timer').innerHTML = '<img src="/static/data/3_5.png"class="img_timer" id="timer">', 2000);
-    setTimeout(() => document.getElementById('timer').innerHTML = '<img src="/static/data/2_5.png"class="img_timer" id="timer">', 3000);
-    setTimeout(() => document.getElementById('timer').innerHTML = '<img src="/static/data/1_5.png"class="img_timer" id="timer">', 4000);
-    setTimeout(() => document.getElementById('timer').innerHTML = '<img src="/static/data/0_5.png"class="img_timer" id="timer">', 5000);
+    setTimeout(() => document.getElementById('timer').innerHTML = '<img src="/static/data/4_5.png" style="width: 20vw; height: 35vh;" class="img_timer_2">', 1000);
+    setTimeout(() => document.getElementById('timer').innerHTML = '<img src="/static/data/3_5.png" style="width: 20vw; height: 35vh;" class="img_timer_2" id="timer">', 2000);
+    setTimeout(() => document.getElementById('timer').innerHTML = '<img src="/static/data/2_5.png" style="width: 20vw; height: 35vh;" class="img_timer_2" id="timer">', 3000);
+    setTimeout(() => document.getElementById('timer').innerHTML = '<img src="/static/data/1_5.png" style="width: 20vw; height: 35vh;" class="img_timer_2" id="timer">', 4000);
+    setTimeout(() => document.getElementById('timer').innerHTML = '<img src="/static/data/0_5.png" style="width: 20vw; height: 35vh;" class="img_timer_2" id="timer">', 5000);
     setTimeout(() => document.getElementById('timer').innerHTML = '', 6000);
-    setTimeout(() => context.drawImage(video, 0, 0, 1280, 720), 6000);
+    context.drawImage(video, 0, 0, 1280, 720)
     $.post("/send", {"image": canvas.toDataURL('image/png').split(',')[1]},
      function(data) {
         var json = $.parseJSON(data);
