@@ -1,3 +1,5 @@
+import os
+
 from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
@@ -9,10 +11,10 @@ import datetime
 
 from db_data import db_session
 from db_data.__all_models import Photo, User, PhotoUser, Statistics
-# from installer import TOKEN
 
-
-TOKEN= '5436507493:AAFNMNTR9qJGWJ9YcBEYsYy-blIiHb07hr8'
+# TOKEN = os.environ.get('TOKEN')
+# print(TOKEN)
+TOKEN = '5436507493:AAFNMNTR9qJGWJ9YcBEYsYy-blIiHb07hr8'
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
@@ -34,7 +36,7 @@ markup_admin.add(button_instruction)
 markup_admin.row(button_statistics_day, button_statistics_week)
 markup_admin.row(button_send_message, button_admin_password)
 
-last_msg = None
+text = 0
 
 
 def new_user(user_id):
@@ -131,6 +133,7 @@ async def start_command(message: types.Message):
 
 @dp.message_handler()
 async def other_command(message: types.Message):
+    global text
     user_id = message.chat.id
     nu = new_user(user_id)
     st = status(user_id)
@@ -139,6 +142,7 @@ async def other_command(message: types.Message):
         await message.reply(f'''1. Сфотографируйтесь в фотобудке школы №1357
 2. Отправьте код, указанный на экране''',
                             reply_markup=markup)
+
     elif message.text == ADMIN_PASSWORD:
         if st == 1:
             await message.reply('''Вы уже админ''',
@@ -147,6 +151,7 @@ async def other_command(message: types.Message):
             ns = new_status(user_id)
             await message.reply('''Теперь вы админ''',
                                 reply_markup=markup_admin)
+
     elif message.text == 'Статистика за день':
         if st == 1:
             s = make_statictics_day()
@@ -165,6 +170,7 @@ async def other_command(message: types.Message):
         else:
             await message.reply('''Некорректный запрос''',
                                 reply_markup=markup)
+
     elif message.text == 'Пароль для админки':
         if st == 1:
             await message.reply(f'''{ADMIN_PASSWORD}''',
@@ -174,7 +180,8 @@ async def other_command(message: types.Message):
                                 reply_markup=markup)
     elif message.text == 'Рассылка':
         if st == 1:
-            await message.reply(f'''Напишите текст для рассылки''',
+            text = 1
+            await message.reply('''Введите текст для рассылки''',
                                 reply_markup=markup)
         else:
             await message.reply('''Некорректный запрос''',
@@ -187,18 +194,24 @@ async def other_command(message: types.Message):
         else:
             await message.reply('''Неверный код''',
                                 reply_markup=markup)
+    elif text:
+        text = message.text
+        await reminder(message.text)
     else:
-        # if st == 1:
-        #     if
         await message.reply('''Некорректный запрос''',
                             reply_markup=markup)
 
-#
-# @dp.message_handler()
-# async def reminder(chat=929513123):
-#     await bot.send_message(chat_id=chat, text='''Добрый день! Вы давно не пользовались нашей фотобудкой(
-# Напоминаем, что она расположена на первом этаже школы №1357-''')
-#
+
+@dp.message_handler()
+async def reminder(message):
+    global text
+    connection = sqlite3.connect('db/photo-booth.sqlite')
+    cursor = connection.cursor()
+    chats = cursor.execute(f'''SELECT user_id FROM users''').fetchall()
+    for chat in chats:
+        await bot.send_message(chat_id=chat[0], text=message)
+    text = 0
+
 
 if __name__ == '__main__':
     executor.start_polling(dp)
