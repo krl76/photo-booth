@@ -208,7 +208,7 @@ async def reminder(message, admin):
     cursor = connection.cursor()
     chats = cursor.execute(f'''SELECT user_id FROM users''').fetchall()
     for chat in chats:
-        if int(chat) == admin:
+        if int(chat[0]) == admin:
             await bot.send_message(chat_id=chat[0], text='Рассылка выполнена')
         else:
             await bot.send_message(chat_id=chat[0], text=message)
