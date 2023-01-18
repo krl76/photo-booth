@@ -181,8 +181,7 @@ async def other_command(message: types.Message):
     elif message.text == 'Рассылка':
         if st == 1:
             text = 1
-            await message.reply('''Введите текст для рассылки''',
-                                reply_markup=markup)
+            await message.reply('''Введите текст для рассылки''')
         else:
             await message.reply('''Некорректный запрос''',
                                 reply_markup=markup)
@@ -196,20 +195,23 @@ async def other_command(message: types.Message):
                                 reply_markup=markup)
     elif text:
         text = message.text
-        await reminder(message.text)
+        await reminder(message.text, user_id)
     else:
         await message.reply('''Некорректный запрос''',
                             reply_markup=markup)
 
 
 @dp.message_handler()
-async def reminder(message):
+async def reminder(message, admin):
     global text
     connection = sqlite3.connect('db/photo-booth.sqlite')
     cursor = connection.cursor()
     chats = cursor.execute(f'''SELECT user_id FROM users''').fetchall()
     for chat in chats:
-        await bot.send_message(chat_id=chat[0], text=message)
+        if int(chat) == admin:
+            await bot.send_message(chat_id=chat[0], text='Рассылка выполнена')
+        else:
+            await bot.send_message(chat_id=chat[0], text=message)
     text = 0
 
 
