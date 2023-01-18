@@ -28,18 +28,43 @@ var context = canvas.getContext('2d')
 context.translate(canvas.width, 0);
 context.scale(-1, 1);
 snap.addEventListener('click', function(){
-    context.drawImage(video, 0, 0, 1280, 720);
-    $.post("/send",
-     {"image": canvas.toDataURL('image/png').split(',')[1]},
-      function(data) {
-        var json = $.parseJSON(data);
-        document.querySelector('form').innerHTML = '<div class="photo"><center><img src="' + json.img + '"class="photo_2"></center></div>'
-        document.getElementById('text_tg').innerHTML = '<center><h1 style="font-size: 3vw;">Через нашего телеграм бота вы сможете скачать вашу фотографию по указанному номеру</h1></center>'
-        document.getElementById('code').innerHTML = '<h1 style="font-size: 4vw;">' + json.code + '</h1>'
-        document.getElementById('button').innerHTML = ''
-        document.getElementById('img').innerHTML = ''
-    });
+    document.getElementById('arrow').innerHTML = ''
+    document.getElementById('button').innerHTML = ''
+    timerload(5);
 });
-back.addEventListener('click', function(){
+
+let videoflash = document.querySelector('video');
+
+function timerload(t){
+    console.log(t);
+    if (t == 0){
+        videoflash.classList.add('flash');
+        document.getElementById('timer').innerHTML = ''
+        setTimeout(() =>  timerload(t - 1), 125);
+    }
+    else if(t == -1){
+        context.drawImage(video, 0, 0, 1280, 720)
+        $.post("/send", {"image": canvas.toDataURL('image/png').split(',')[1]},
+            function(data) {
+            var json = $.parseJSON(data);
+            $.get("/qr",
+                function(data) {
+                var json = $.parseJSON(data);
+                document.getElementById('qr-code').innerHTML = '<center><img src="' + json.tglink + '" style="width: 18vw; height: 36vh"></center>'
+            });
+            document.getElementById('arrow').innerHTML = '<img src="static/data/arrow.png" class="img-btn1" id="back">'
+            document.querySelector('form').innerHTML = '<div class="photo"><center><img src="' + json.img + '"class="photo_2"></center></div>'
+            document.getElementById('text_tg').innerHTML = '<center><h1 style="font-size: 3vw;">Через нашего телеграм бота вы сможете скачать вашу фотографию по указанному номеру</h1></center>'
+            document.getElementById('code').innerHTML = '<h1 style="font-size: 4vw;">' + json.code + '</h1>'
+            document.getElementById('img').innerHTML = ''
+        });
+    }
+    else{
+        document.getElementById('timer').innerHTML = '<img src="/static/data/' + t + '_5.png" style="width: 20vw; height: 35vh;" class="img_timer_2" id="timer">'
+        setTimeout(() =>  timerload(t - 1), 1000);
+    }
+};
+
+arrow.addEventListener('click', function(){
         history.back();
 });

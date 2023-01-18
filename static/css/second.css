@@ -56,23 +56,38 @@ margin-top: 12vh;
 margin-left: 6vw;
 }
 .photo .photo_2 {
-width: 50vw;
-height: 60vh;
+width: 1280px;
+height: 720px;
+margin-top: 8vh;
+margin-left: -30vw;
 }
 .tg {
 position: absolute;
-top: 20vh;
-right: 15vw;
+top: 15vh;
+right: 10vw;
 }
 .sentence_tg {
 position: absolute;
-margin-top: 75vh;
+margin-top: 6vh;
 }
 .sentence_code {
 position: absolute;
-right: 18vw;
-top: 50vh;
+right: 13.6vw;
+top: 44vh;
 }
 .code_tg {
 color: red;
+}
+.flash {
+opacity: 1;
+-webkit-animation: flash 4s;
+animation: flash 4s;
+}
+@-webkit-keyframes flash {
+0% {  opacity: 0;  }
+100% { opacity: 1; }
+}
+@keyframes flash {
+0% { opacity: 0; }
+100% { opacity: 1;  }
 }

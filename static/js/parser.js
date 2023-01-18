@@ -5,9 +5,9 @@ $.get("/parser",
         function(data) {
             var json = $.parseJSON(data);
 
-            post = '<img src="' + json.attachments_1 + '"class="d-block w-100"><div class="carousel-caption d-none d-md-block" id="text_1"><h5 style="color: ' + json.colour_1 + '; font-size: 0.7vw">'
-            post += json.text_1 + '</h5></div>'
-            document.getElementById('img_1').innerHTML = post
+            post = '<img src="' + json.attachments_1 + '"class="d-block w-100"><div class="carousel-caption d-none d-md-block" id="text_1"><h5 style="color: ' + json.colour_1 + '; font-size: 0.7vw">';
+            post += json.text_1 + '</h5></div>';
+            document.getElementById('img_1').innerHTML = post;
 //            document.getElementById('img_2').innerHTML = '<img src="' + json.attachments_2 + '"class="d-block w-100"><div class="carousel-caption d-none d-md-block" id="text_2"><h5 style="color: ' + json.colour_2 + '; font-size: 0.7vw">' + json.text_2 + '</h5></div>'
 //            document.getElementById('img_3').innerHTML = '<img src="' + json.attachments_3 + '"class="d-block w-100"><div class="carousel-caption d-none d-md-block" id="text_3"><h5 style="color: ' + json.colour_3 + '; font-size: 0.7vw">' + json.text_3 + '</h5></div>'
     });
