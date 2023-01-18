@@ -9,7 +9,7 @@ import datetime
 
 from db_data import db_session
 from db_data.__all_models import Photo, User, PhotoUser, Statistics
-from installer import TOKEN
+# from installer import TOKEN
 
 
 TOKEN= '5436507493:AAFNMNTR9qJGWJ9YcBEYsYy-blIiHb07hr8'
@@ -31,10 +31,10 @@ markup_user.add(button_instruction)
 
 markup_admin = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
 markup_admin.add(button_instruction)
-markup_admin.add(button_statistics_day)
-markup_admin.add(button_statistics_week)
-markup_admin.add(button_send_message)
-markup_admin.add(button_admin_password)
+markup_admin.row(button_statistics_day, button_statistics_week)
+markup_admin.row(button_send_message, button_admin_password)
+
+last_msg = None
 
 
 def new_user(user_id):
@@ -174,7 +174,7 @@ async def other_command(message: types.Message):
                                 reply_markup=markup)
     elif message.text == 'Рассылка':
         if st == 1:
-            await message.reply(f'''Напишите текст для рассылки (Пока что не работает)''',
+            await message.reply(f'''Напишите текст для рассылки''',
                                 reply_markup=markup)
         else:
             await message.reply('''Некорректный запрос''',
@@ -188,6 +188,8 @@ async def other_command(message: types.Message):
             await message.reply('''Неверный код''',
                                 reply_markup=markup)
     else:
+        # if st == 1:
+        #     if
         await message.reply('''Некорректный запрос''',
                             reply_markup=markup)
 
