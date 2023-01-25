@@ -20,10 +20,11 @@ background: url('/static/data/bg1.png');
 background-size: cover;
 }
 .carousel {
-  height: 80vh;
-  width: 40vw;
-  margin-left: 30vw;
-  margin-top: 0.5vh;
+position: absolutely;
+height: 80vh;
+width: 40vw;
+margin-left: 30vw;
+margin-top: 5vh;
 }
 /*.carousel-inner img {
   height: 80vh;
