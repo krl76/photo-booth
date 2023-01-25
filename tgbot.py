@@ -1,5 +1,3 @@
-import os
-
 from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
@@ -12,8 +10,8 @@ import datetime
 from db_data import db_session
 from db_data.__all_models import Photo, User, PhotoUser, Statistics
 
-# TOKEN = os.environ.get('TOKEN')
-# print(TOKEN)
+import asyncio
+
 TOKEN = '5436507493:AAFNMNTR9qJGWJ9YcBEYsYy-blIiHb07hr8'
 
 bot = Bot(token=TOKEN)
@@ -120,6 +118,14 @@ def make_statictics_week():
     return [make_week, send_week]
 
 
+def remind():
+    connection = sqlite3.connect('db/photo-booth.sqlite')
+    cursor = connection.cursor()
+    users = cursor.execute(f'''SELECT user_id FROM users WHERE date_last_using<"{datetime.datetime.now() - datetime.timedelta(weeks=3)}"''').fetchall()
+    connection.commit()
+    connection.close()
+
+
 @dp.message_handler(commands=['start'])
 async def start_command(message: types.Message):
     user_id = message.chat.id
@@ -142,7 +148,7 @@ async def other_command(message: types.Message):
         await message.reply(f'''1. Сфотографируйтесь в фотобудке школы №1357
 2. Отправьте код, указанный на экране''',
                             reply_markup=markup)
-
+        await reminder()
     elif message.text == ADMIN_PASSWORD:
         if st == 1:
             await message.reply('''Вы уже админ''',
@@ -195,14 +201,14 @@ async def other_command(message: types.Message):
                                 reply_markup=markup)
     elif text:
         text = message.text
-        await reminder(message.text, user_id)
+        await mailing(message.text, user_id)
     else:
         await message.reply('''Некорректный запрос''',
                             reply_markup=markup)
 
 
 @dp.message_handler()
-async def reminder(message, admin):
+async def mailing(message, admin):
     global text
     connection = sqlite3.connect('db/photo-booth.sqlite')
     cursor = connection.cursor()
@@ -215,5 +221,27 @@ async def reminder(message, admin):
     text = 0
 
 
+@dp.message_handler()
+async def reminder():
+    connection = sqlite3.connect('db/photo-booth.sqlite')
+    cursor = connection.cursor()
+    users = cursor.execute(
+        f'''SELECT user_id FROM users WHERE date_last_using<"{datetime.datetime.now() - datetime.timedelta(weeks=3)}"''').fetchall()
+    connection.commit()
+    connection.close()
+    for user in users:
+        await bot.send_message(chat_id=user[0], text='''Добрый день! Вы давно не пользовались нашей фотобудкой(
+Напоминаем, что она расположена на первом этаже школы №1357''')
+
+
+# async def main():
+#     tasks = [
+#
+#     ]
+#     executor.start_polling(dp)
+
+
 if __name__ == '__main__':
+    # asyncio.run(main())
     executor.start_polling(dp)
+
