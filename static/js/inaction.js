@@ -15,7 +15,7 @@ function idleTimer() {
     if (time > 2) {
         //здесь нужное вам действие на простой
         myModal.show();
-        timerload(15);
+        timer(15);
         let no = document.querySelector('#button_no');
         let yes = document.querySelector('#button_yes');
         yes.addEventListener('click', function() {
