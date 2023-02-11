@@ -18,3 +18,4 @@ def delete_statistics():
         f'''DELETE FROM statistics WHERE time<"{datetime.datetime.now() - datetime.timedelta(weeks=1)}"''').fetchall()
     connection.commit()
     connection.close()
+

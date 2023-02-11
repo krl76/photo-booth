@@ -95,29 +95,12 @@ def get_posts():
     for i in range(3):
         post = {
             'text': data[i]['text'],
-            'attachments': data[i]['attachments'][0]['photo']['sizes'][2]['url'] if 'attachments' in data[i] else URL_LOGO
+            'attachments': data[i]['attachments'][0]['photo']['sizes'][2]['url'] if 'attachments' in data[i] else URL_LOGO,
+            'colour': 'white' if 'attachments' in data[i] else 'black'
         }
         posts.append(post)
-
-        if 'attachments' in data[i]:
-
-            posts[f'text_{i + 1}'] = data[i]['text']
-            posts[f'attachments_{i + 1}'] = data[i]['attachments'][0]['photo']['sizes'][2]['url']
-            posts[f'colour_{i + 1}'] = 'white'
-        else:
-            posts[f'text_{i + 1}'] = data[i]['text']
-            posts[f'attachments_{i + 1}'] = 'static/data/1357_logo.jpg'
-            posts[f'colour_{i + 1}'] = 'black'
     return json.dumps({'success': 'ok',
-                       'data': [
-                           {
-                               'text': posts['text_1'],
-                               'attachments': posts['attachments_1'],
-                            }
-                       ]})
-                       # 'text_1': posts['text_1'], 'attachments_1': posts['attachments_1'], 'colour_1': posts['colour_1'],
-                       # 'text_2': posts['text_2'], 'attachments_2': posts['attachments_2'], 'colour_2': posts['colour_2'],
-                       # 'text_3': posts['text_3'], 'attachments_3': posts['attachments_3'], 'colour_3': posts['colour_3']})
+                       'data': posts})
 
 
 def run_db():
