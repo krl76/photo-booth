@@ -27,11 +27,11 @@ function idleTimer() {
     };
 };
 
-function timerload(t){
+function timer(t){
     if (t == 0){
       history.back();
     };
     document.getElementById('timedown').innerHTML = '' + t + ''
     console.log(t)
-    setTimeout(() =>  timerload(t - 1), 1000);
+    setTimeout(() =>  timer(t - 1), 1000);
 };
