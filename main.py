@@ -94,9 +94,9 @@ def get_posts():
     URL_LOGO = 'static/data/1357_logo.jpg'
     for i in range(3):
         post = {
-            'text': data[i]['text'],
-            'attachments': data[i]['attachments'][0]['photo']['sizes'][2]['url'] if 'attachments' in data[i] else URL_LOGO,
-            'colour': 'white' if 'attachments' in data[i] else 'black'
+            'text': data[i]['text'][:300] + '...',
+            'attachments': data[i]['attachments'][0]['photo']['sizes'][2]['url'] if 'attachments' in data[i] and data[i]['attachments'][0]['photo']['sizes'][1]['height'] < data[i]['attachments'][0]['photo']['sizes'][1]['width'] else URL_LOGO,
+            'colour': 'white' if 'attachments' in data[i] and data[i]['attachments'][0]['photo']['sizes'][1]['height'] < data[i]['attachments'][0]['photo']['sizes'][1]['width'] else 'black'
         }
         posts.append(post)
     return json.dumps({'success': 'ok',

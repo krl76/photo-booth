@@ -12,6 +12,7 @@ font-size: 3vw;
 }
 html {
 height: 100vh;
+overflow-y: hidden;
 }
 body {
 margin: 0;
@@ -26,23 +27,9 @@ width: 40vw;
 margin-left: 30vw;
 margin-top: 5vh;
 }
-/*.carousel-inner img {
-  height: 80vh;
-  width: 40vw;
+.carousel slide pointer-event {
+position: absolutely;
+}
+/*.carousel-inner {
+border: 3px solid black;
 }*/
-.carousel-indicators li {
-  border-color: #808080;
-  background-color: #808080;
-}
-.carousel-indicators .active {
-  margin-top: -19vh;
-}
-.carousel-control-prev {
-    margin-top: -15.2vh;
-}
-.carousel-control-next {
-    margin-top: -15vh
-}
-.visually-hidden {
-    border-color: #000;
-}
