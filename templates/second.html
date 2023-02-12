@@ -8,9 +8,11 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/bootstrap/bootstrap.css') }}">
 
 </head>
-<body>
+<body onmousedown="return false;" onclick="return true;">
     <div class="go_back" id="arrow">
         <img src="static/data/arrow.png" class="img-btn1" id="back">
+    </div>
+    <div class="go_update" id="update_arrow">
     </div>
     <form>
         <div class="video-wrap" id="camera">

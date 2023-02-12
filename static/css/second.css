@@ -5,6 +5,13 @@ src: url('/static/data/YakumoPreschoolHand.ttf');
 h1 {
 font-family: 'YakumoPreschoolHand', 'Comic Sans MS';
 }
+@font-face {
+font-family: 'Choplin-Book';
+src: url('/static/data/Choplin-Book.ttf');
+}
+h2 {
+font-family: 'Choplin-Book', 'Lucida Console';
+}
 video {
 transform: scaleX(-1);
 -o-transform: scaleX(-1);
@@ -67,13 +74,12 @@ top: 15vh;
 right: 10vw;
 }
 .sentence_tg {
-position: absolute;
 margin-top: 6vh;
 }
 .sentence_code {
 position: absolute;
-right: 13.6vw;
-top: 50vh;
+right: 13.4vw;
+top: 49.8vh;
 }
 .code_tg {
 color: red;
@@ -90,4 +96,21 @@ animation: flash 4s;
 @keyframes flash {
 0% { opacity: 0; }
 100% { opacity: 1;  }
+}
+.go_update {
+position: absolute;
+right: 3vw;
+margin-top: 1vh;
+}
+.img-btn3 {
+width: 5vw;
+height: 10vh;
+}
+.go_update .img-btn3 {
+cursor: pointer;
+transition-duration: 0.2s;
+}
+.go_update .img-btn3:hover {
+filter: brightness(80%);
+transition-duration: 0.2s;
 }
