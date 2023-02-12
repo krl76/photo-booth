@@ -114,3 +114,8 @@ transition-duration: 0.2s;
 filter: brightness(80%);
 transition-duration: 0.2s;
 }
+.tg_bot {
+position: absolute;
+top: 15vh;
+right: 13.3vw;
+}

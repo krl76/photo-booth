@@ -57,6 +57,7 @@ function timerload(t){
             document.querySelector('form').innerHTML = '<div class="photo"><center><img src="' + json.img + '"class="photo_2"></center></div>'
             document.getElementById('text_tg').innerHTML = '<center><h1 style="font-size: 2vw;">Через нашего телеграм бота вы сможете скачать вашу фотографию по указанному номеру</h1><h1 style="font-size: 2vw;">Если вы хотите вернуться на главный экран нажмите на стрелочку в левом верхнем углу</h1><h1 style="font-size: 2vw;">Если вы хотите сделать еще одну фотографию нажмите на стрелочку в правом верхнем углу</h1><h1 style="font-size: 2vw;">Спасибо, что пользуетесь нашей фотобудкой!</h1></center>'
             document.getElementById('code').innerHTML = '<h2 style="font-size: 3vw;">' + json.code + '</h2>'
+            document.getElementById('bot_sentance').innerHTML = '<h2 style="font-size: 1vw;">@photobooth1357_bot</h2>'
             document.getElementById('img').innerHTML = ''
         });
     }
