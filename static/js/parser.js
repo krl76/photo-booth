@@ -8,9 +8,9 @@ $.get("/parser",
             json['data'].forEach(function (currentValue, index, array){
                 console.log(array[0]['attachments'])
                 posts = array;
-                document.getElementById('img_1').innerHTML = '<img src="' + posts[0]['attachments'] + '"class="d-block w-100"><div class="carousel-caption d-none d-md-block" id="text_2"><h5 style="color: ' + posts[0]['colour'] + '; font-size: 0.7vw; margin-top: -10vh">' + posts[0]['text'] + '</h5></div>';
-                document.getElementById('img_2').innerHTML = '<img src="' + posts[1]['attachments'] + '"class="d-block w-100"><div class="carousel-caption d-none d-md-block" id="text_2"><h5 style="color: ' + posts[1]['colour'] + '; font-size: 0.7vw">' + posts[1]['text'] + '</h5></div>';
-                document.getElementById('img_3').innerHTML = '<img src="' + posts[2]['attachments'] + '"class="d-block w-100"><div class="carousel-caption d-none d-md-block" id="text_2"><h5 style="color: ' + posts[2]['colour'] + '; font-size: 0.7vw">' + posts[2]['text'] + '</h5></div>';
+                document.getElementById('img_1').innerHTML = '<img src="' + posts[0]['attachments'] + '" style="height: 604px; width: 453px;" class="d-block w-100"><div class="carousel-caption d-none d-md-block" id="text_1"><h5 style="color: ' + posts[0]['colour'] + '; font-size: 0.7vw">' + posts[0]['text'] + '</h5></div>';
+                document.getElementById('img_2').innerHTML = '<img src="' + posts[1]['attachments'] + '" style="height: 604px; width: 453px;" class="d-block w-100"><div class="carousel-caption d-none d-md-block" id="text_2"><h5 style="color: ' + posts[1]['colour'] + '; font-size: 0.7vw">' + posts[1]['text'] + '</h5></div>';
+                document.getElementById('img_3').innerHTML = '<img src="' + posts[2]['attachments'] + '" style="height: 604px; width: 453px;" class="d-block w-100"><div class="carousel-caption d-none d-md-block" id="text_3"><h5 style="color: ' + posts[2]['colour'] + '; font-size: 0.7vw">' + posts[2]['text'] + '</h5></div>';
             });
 
 //            for(let i == 0;;1) {

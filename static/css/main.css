@@ -10,6 +10,11 @@ vertical-align: middle;
 text-align: center;
 font-size: 3vw;
 }
+.news_text {
+position: absolute;
+margin-left: 41.5vw;
+top: 38vh;
+}
 html {
 height: 100vh;
 overflow-y: hidden;
@@ -25,11 +30,11 @@ position: absolutely;
 height: 80vh;
 width: 40vw;
 margin-left: 30vw;
-margin-top: 5vh;
+margin-top: 12vh;
 }
 .carousel slide pointer-event {
 position: absolutely;
 }
-/*.carousel-inner {
+.carousel-inner {
 border: 3px solid black;
-}*/
+}

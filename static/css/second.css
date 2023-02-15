@@ -2,6 +2,9 @@
 font-family: 'YakumoPreschoolHand';
 src: url('/static/data/YakumoPreschoolHand.ttf');
 }
+html {
+overflow-y: hidden;
+}
 h1 {
 font-family: 'YakumoPreschoolHand', 'Comic Sans MS';
 }
