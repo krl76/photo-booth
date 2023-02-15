@@ -3,21 +3,24 @@ from aiogram.dispatcher import Dispatcher
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.utils import executor
 
-import sqlite3
-
 import datetime
+
+from random import choices
 
 from db_data import db_session
 from db_data.__all_models import Photo, User, PhotoUser, Statistics
+import sqlite3
 
-import asyncio
+import threading
+import schedule
+import time
+
+from main import admin_password
 
 TOKEN = '5436507493:AAFNMNTR9qJGWJ9YcBEYsYy-blIiHb07hr8'
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
-
-ADMIN_PASSWORD = 'admin1357'
 
 button_instruction = KeyboardButton('Инструкция')
 
@@ -79,8 +82,6 @@ def send_photo(user_id, code):
     connection = sqlite3.connect('db/photo-booth.sqlite')
     cursor = connection.cursor()
     user = cursor.execute(f'''UPDATE users SET count_photo=count_photo+1 WHERE user_id="{user_id}"''').fetchall()
-    last_using = cursor.execute(
-        f'''UPDATE users SET date_last_using="{datetime.datetime.now()}" WHERE user_id="{user_id}"''').fetchall()
     path = cursor.execute(f'''SELECT photo FROM photos WHERE code="{code}"''').fetchone()[0]
     statistics = cursor.execute(
         f'''UPDATE statistics SET count_send=count_send+1 WHERE photo="{path}"''').fetchall()
@@ -118,12 +119,12 @@ def make_statictics_week():
     return [make_week, send_week]
 
 
-def remind():
+def last_using(user_id):
     connection = sqlite3.connect('db/photo-booth.sqlite')
     cursor = connection.cursor()
-    users = cursor.execute(f'''SELECT user_id FROM users WHERE date_last_using<"{datetime.datetime.now() - datetime.timedelta(weeks=3)}"''').fetchall()
+    last_using = cursor.execute(
+        f'''UPDATE users SET date_last_using="{datetime.datetime.now()}" WHERE user_id="{user_id}"''').fetchall()
     connection.commit()
-    connection.close()
 
 
 @dp.message_handler(commands=['start'])
@@ -140,16 +141,18 @@ async def start_command(message: types.Message):
 @dp.message_handler()
 async def other_command(message: types.Message):
     global text
+    global admin_password
     user_id = message.chat.id
     nu = new_user(user_id)
     st = status(user_id)
     markup = markup_admin if st == 1 else markup_user
+    lu = last_using(user_id)
     if message.text == 'Инструкция':
         await message.reply(f'''1. Сфотографируйтесь в фотобудке школы №1357
-2. Отправьте код, указанный на экране''',
+2. Отправьте код, указанный на экране
+3. Через 15 минут фотография удалится из памяти фотобудки''',
                             reply_markup=markup)
-        await reminder()
-    elif message.text == ADMIN_PASSWORD:
+    elif message.text == admin_password:
         if st == 1:
             await message.reply('''Вы уже админ''',
                                 reply_markup=markup_admin)
@@ -179,7 +182,8 @@ async def other_command(message: types.Message):
 
     elif message.text == 'Пароль для админки':
         if st == 1:
-            await message.reply(f'''{ADMIN_PASSWORD}''',
+            print(admin_password)
+            await message.reply(f'''{admin_password}''',
                                 reply_markup=markup)
         else:
             await message.reply('''Некорректный запрос''',
@@ -222,26 +226,17 @@ async def mailing(message, admin):
 
 
 @dp.message_handler()
-async def reminder():
+def reminder():
     connection = sqlite3.connect('db/photo-booth.sqlite')
     cursor = connection.cursor()
     users = cursor.execute(
-        f'''SELECT user_id FROM users WHERE date_last_using<"{datetime.datetime.now() - datetime.timedelta(weeks=3)}"''').fetchall()
+        f'''SELECT user_id FROM users WHERE date_last_using<"{datetime.datetime.now() - datetime.timedelta(minutes=1)}"''').fetchall()
     connection.commit()
     connection.close()
     for user in users:
-        await bot.send_message(chat_id=user[0], text='''Добрый день! Вы давно не пользовались нашей фотобудкой(
+        bot.send_message(chat_id=user[0], text='''Добрый день! Вы давно не пользовались нашей фотобудкой(
 Напоминаем, что она расположена на первом этаже школы №1357''')
 
 
-# async def main():
-#     tasks = [
-#
-#     ]
-#     executor.start_polling(dp)
-
-
 if __name__ == '__main__':
-    # asyncio.run(main())
     executor.start_polling(dp)
-

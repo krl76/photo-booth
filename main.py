@@ -11,11 +11,15 @@ from db_data import db_session
 from db_data.__all_models import Photo, Statistics
 import sqlite3
 from clear_db import delete_photos, delete_statistics
+
 from random import choices
 import datetime
 import schedule
+import threading
 
 app = Flask(__name__, static_folder="static")
+
+admin_password = 'admin1357'
 
 
 @app.route("/")
@@ -129,12 +133,29 @@ def generate_code():
         return code
 
 
-if __name__ == '__main__':
-    schedule.every(1).minutes.do(delete_photos)
-    schedule.every().day.at('00:00').do(delete_statistics)
-    schedule.every(60).minutes.do(get_posts)
+# def change_password():
+#     global admin_password
+#     admin_password = ''.join(choices('0 1 2 3 4 5 6 7 8 9 q w e r t y u i o p a s d f g h j k l z x c v b n m'.split(), k=8))
+#     print(admin_password)
+
+
+def start():
     run_db()
     app.run(debug=True)
+
+
+def sch():
+    schedule.every().minutes.do(delete_photos)
+    schedule.every().day.at('00:00').do(delete_statistics)
+    # schedule.every().day.at('23:40').do(change_password)
+    schedule.every(60).minutes.do(get_posts)
     while True:
         schedule.run_pending()
-        time.sleep(1)
+
+
+if __name__ == '__main__':
+    t1 = threading.Thread(target=start)
+    t2 = threading.Thread(target=sch)
+
+    t1.start()
+    t2.start()
