@@ -38,9 +38,9 @@ let videoflash = document.querySelector('video');
 function timerload(t){
     console.log(t);
     if (t == 0){
-        videoflash.classList.add('flash');
+        /*videoflash.classList.add('flash');*/
         document.getElementById('timer').innerHTML = ''
-        setTimeout(() =>  timerload(t - 1), 125);
+        setTimeout(() =>  timerload(t - 1));
     }
     else if(t == -1){
         context.drawImage(video, 0, 0, 1280, 720)

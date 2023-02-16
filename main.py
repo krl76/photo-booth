@@ -141,7 +141,7 @@ def generate_code():
 
 def start():
     run_db()
-    app.run(debug=True)
+    app.run()
 
 
 def sch():
