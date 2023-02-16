@@ -148,7 +148,7 @@ def sch():
     schedule.every().minutes.do(delete_photos)
     schedule.every().day.at('00:00').do(delete_statistics)
     # schedule.every().day.at('23:40').do(change_password)
-    schedule.every(60).minutes.do(get_posts)
+    schedule.every(3).hours.do(get_posts)
     while True:
         schedule.run_pending()
 
