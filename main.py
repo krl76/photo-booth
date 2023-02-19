@@ -97,19 +97,17 @@ def get_posts():
     posts = []
     URL_LOGO = 'static/data/1357_logo.jpg'
     for i in range(3):
+        flag = False
+        if 'attachments' in data[i]:
+            if 'photo' in data[i]['attachments'][0]:
+                if data[i]['attachments'][0]['photo']['sizes'][2]['width'] > \
+                        data[i]['attachments'][0]['photo']['sizes'][2]['height'] >= 400 \
+                        and data[i]['attachments'][0]['photo']['sizes'][2]['width'] >= 600:
+                    flag = True
         post = {
             'text': data[i]['text'][:200] + '...',
-            'attachments': data[i]['attachments'][0]['photo']['sizes'][2]['url'] if 'attachments' in data[i]
-                                                                                    and
-                                                                                    data[i]['attachments'][0]['photo'][
-                                                                                        'sizes'][2]['width'] >
-                                                                                    data[i]['attachments'][0]['photo'][
-                                                                                        'sizes'][2]['height'] >= 400
-                                                                                    and data[i]['attachments'][0]['photo']['sizes'][2]['width'] >= 600
-                                                                                    else URL_LOGO,
-            'colour': 'white' if 'attachments' in data[i] and data[i]['attachments'][0]['photo']['sizes'][2]['width']
-                                 > data[i]['attachments'][0]['photo']['sizes'][2]['height']
-                                 >= 400 and data[i]['attachments'][0]['photo']['sizes'][2]['width'] >= 600 else 'black'
+            'attachments': data[i]['attachments'][0]['photo']['sizes'][2]['url'] if flag else URL_LOGO,
+            'colour': 'white' if flag else 'black'
         }
         posts.append(post)
     return json.dumps({'success': 'ok',
