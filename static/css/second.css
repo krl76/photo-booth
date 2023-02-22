@@ -24,7 +24,7 @@ transform: scaleX(-1);
 }
 .img-btn2 {
 margin-top: 2vh;
-width: 5vw;
+width: 13vw;
 height: 10vh;
 }
 .controller .img-btn2 {
@@ -41,8 +41,8 @@ margin-left: 1vw;
 margin-top: 1vh;
 }
 .img-btn1 {
-width: 6vw;
-height: 6vh;
+width: 12vw;
+height: 4vh;
 }
 .go_back .img-btn1 {
 cursor: pointer;
@@ -66,8 +66,8 @@ margin-top: 12vh;
 margin-left: 6vw;
 }
 .photo .photo_2 {
-width: 1280px;
-height: 720px;
+width: 270px;
+height: 480px;
 margin-top: 8vh;
 margin-left: -30vw;
 }
@@ -77,12 +77,12 @@ top: 15vh;
 right: 10vw;
 }
 .sentence_tg {
-margin-top: 6vh;
+margin-top: 20vh;
 }
 .sentence_code {
 position: absolute;
-right: 13.4vw;
-top: 49.8vh;
+right: 13.5vw;
+top: 30.5vh;
 }
 .code_tg {
 color: red;
@@ -106,8 +106,8 @@ right: 3vw;
 margin-top: 1vh;
 }
 .img-btn3 {
-width: 5vw;
-height: 10vh;
+width: 6vw;
+height: 6vh;
 }
 .go_update .img-btn3 {
 cursor: pointer;
@@ -119,6 +119,6 @@ transition-duration: 0.2s;
 }
 .tg_bot {
 position: absolute;
-top: 15vh;
-right: 13.3vw;
+top: 14vh;
+right: 8vw;
 }
