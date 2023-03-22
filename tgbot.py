@@ -23,21 +23,27 @@ bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
 
 button_instruction = KeyboardButton('Инструкция')
+button_otzyv = KeyboardButton('Отзыв')
 
 button_statistics_day = KeyboardButton('Статистика за день')
 button_statistics_week = KeyboardButton('Статистика за неделю')
 button_send_message = KeyboardButton('Рассылка')
 button_admin_password = KeyboardButton('Пароль для админки')
+button_count_users = KeyboardButton('Количество пользователей')
+button_count_admins = KeyboardButton('Количество админов')
 
 markup_user = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-markup_user.add(button_instruction)
+markup_user.row(button_instruction, button_otzyv)
 
 markup_admin = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
 markup_admin.add(button_instruction)
 markup_admin.row(button_statistics_day, button_statistics_week)
+markup_admin.row(button_count_users, button_count_admins)
 markup_admin.row(button_send_message, button_admin_password)
 
-text = 0
+
+text_message = 0
+text_otzyv = 0
 
 
 def new_user(user_id):
@@ -102,8 +108,9 @@ def make_statictics_day():
     cursor = connection.cursor()
     make_day = len(cursor.execute(
         f'''SELECT photo FROM statistics WHERE time>"{datetime.datetime.now() - datetime.timedelta(days=1)}"''').fetchall())
-    send_day = len(cursor.execute(
-        f'''SELECT photo FROM statistics WHERE time>"{datetime.datetime.now() - datetime.timedelta(days=1)}" AND count_send>0''').fetchall())
+    send_day = cursor.execute(
+        f'''SELECT count_send FROM statistics WHERE time>"{datetime.datetime.now() - datetime.timedelta(days=1)}"''').fetchall()
+    send_day = sum([int(i[0]) for i in send_day])
     connection.close()
     return [make_day, send_day]
 
@@ -113,8 +120,9 @@ def make_statictics_week():
     cursor = connection.cursor()
     make_week = len(cursor.execute(
         f'''SELECT photo FROM statistics WHERE time>"{datetime.datetime.now() - datetime.timedelta(weeks=1)}"''').fetchall())
-    send_week = len(cursor.execute(
-        f'''SELECT photo FROM statistics WHERE time>"{datetime.datetime.now() - datetime.timedelta(weeks=1)}" AND count_send>0''').fetchall())
+    send_week = cursor.execute(
+        f'''SELECT count_send FROM statistics WHERE time>"{datetime.datetime.now() - datetime.timedelta(weeks=1)}"''').fetchall()
+    send_week = sum([int(i[0]) for i in send_week])
     connection.close()
     return [make_week, send_week]
 
@@ -125,6 +133,22 @@ def last_using(user_id):
     last_using = cursor.execute(
         f'''UPDATE users SET date_last_using="{datetime.datetime.now()}" WHERE user_id="{user_id}"''').fetchall()
     connection.commit()
+
+
+def count_users():
+    connection = sqlite3.connect('db/photo-booth.sqlite')
+    cursor = connection.cursor()
+    cu = len(cursor.execute(f'''SELECT id FROM users WHERE status=2''').fetchall())
+    connection.close()
+    return cu
+
+
+def count_admins():
+    connection = sqlite3.connect('db/photo-booth.sqlite')
+    cursor = connection.cursor()
+    ca = len(cursor.execute(f'''SELECT id FROM users WHERE status=1''').fetchall())
+    connection.close()
+    return ca
 
 
 @dp.message_handler(commands=['start'])
@@ -140,7 +164,8 @@ async def start_command(message: types.Message):
 
 @dp.message_handler()
 async def other_command(message: types.Message):
-    global text
+    global text_message
+    global  text_otzyv
     global admin_password
     user_id = message.chat.id
     nu = new_user(user_id)
@@ -190,8 +215,29 @@ async def other_command(message: types.Message):
                                 reply_markup=markup)
     elif message.text == 'Рассылка':
         if st == 1:
-            text = 1
+            text_message = 1
             await message.reply('''Введите текст для рассылки''')
+        else:
+            await message.reply('''Некорректный запрос''',
+                                reply_markup=markup)
+    elif message.text == 'Отзыв':
+        if st == 2:
+            text_otzyv = 1
+            await message.reply('''Напишите отзыв''')
+        else:
+            await message.reply('''Некорректный запрос''',
+                                reply_markup=markup)
+    elif message.text == 'Количество пользователей':
+        if st == 1:
+            cu = count_users()
+            await message.reply(f'''Количество пользователей: {cu}''')
+        else:
+            await message.reply('''Некорректный запрос''',
+                                reply_markup=markup)
+    elif message.text == 'Количество админов':
+        if st == 1:
+            ca = count_admins()
+            await message.reply(f'''Количество админов: {ca}''')
         else:
             await message.reply('''Некорректный запрос''',
                                 reply_markup=markup)
@@ -203,9 +249,12 @@ async def other_command(message: types.Message):
         else:
             await message.reply('''Неверный код''',
                                 reply_markup=markup)
-    elif text:
-        text = message.text
+    elif text_message:
+        text_message = message.text
         await mailing(message.text, user_id)
+    elif text_otzyv:
+        text_otzyv = message.text
+        await otzyv(message.text)
     else:
         await message.reply('''Некорректный запрос''',
                             reply_markup=markup)
@@ -213,7 +262,7 @@ async def other_command(message: types.Message):
 
 @dp.message_handler()
 async def mailing(message, admin):
-    global text
+    global text_message
     connection = sqlite3.connect('db/photo-booth.sqlite')
     cursor = connection.cursor()
     chats = cursor.execute(f'''SELECT user_id FROM users''').fetchall()
@@ -222,7 +271,18 @@ async def mailing(message, admin):
             await bot.send_message(chat_id=chat[0], text='Рассылка выполнена')
         else:
             await bot.send_message(chat_id=chat[0], text=message)
-    text = 0
+    text_message = 0
+
+
+@dp.message_handler()
+async def otzyv(message):
+    global text_otzyv
+    connection = sqlite3.connect('db/photo-booth.sqlite')
+    cursor = connection.cursor()
+    chats = cursor.execute(f'''SELECT user_id FROM users WHERE status=1''').fetchall()
+    for chat in chats:
+        await bot.send_message(chat_id=chat[0], text=message)
+    text_otzyv = 0
 
 
 @dp.message_handler()
