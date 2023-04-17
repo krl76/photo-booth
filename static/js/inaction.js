@@ -10,6 +10,8 @@ $(document).ready(function () {
     });
 });
 
+let flag = false;
+
 function idleTimer() {
     time = time + 1;
     if (time > 2) {
@@ -17,12 +19,18 @@ function idleTimer() {
         myModal.show();
         timer(15);
         let no = document.querySelector('#button_no');
+        let body = document.querySelector('#body');
         let yes = document.querySelector('#button_yes');
         yes.addEventListener('click', function() {
             history.back();
         });
         no.addEventListener('click', function() {
             myModal.hide();
+            flag = true;
+        });
+        body.addEventListener('click', function() {
+            myModal.hide();
+            flag = true;
         });
     };
 };
@@ -30,6 +38,10 @@ function idleTimer() {
 function timer(t){
     if (t == 0){
       history.back();
+    };
+    if (flag){
+        flag = false;
+        return;
     };
     document.getElementById('timedown').innerHTML = '' + t + ''
     console.log(t)

@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/bootstrap/bootstrap.css') }}">
 
 </head>
-<body onmousedown="return false;" onclick="return true;">
+<body onmousedown="return false;" onclick="return true;" id='body'>
     <div class="go_back" id="arrow">
         <img src="static/data/arrow.png" class="img-btn1" id="back">
     </div>
@@ -37,7 +37,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Бездействие</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть" id="upper_button_no"></button>
           </div>
           <div class="modal-body">
               Завершить сеанс?
