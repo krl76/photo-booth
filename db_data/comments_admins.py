@@ -7,4 +7,4 @@ class CommentAdmin(SqlAlchemyBase):
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     admin = sqlalchemy.Column(sqlalchemy.Integer, unique=True)
-    commnets = sqlalchemy.Column(sqlalchemy.Integer)
+    comments = sqlalchemy.Column(sqlalchemy.Integer)

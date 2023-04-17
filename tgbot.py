@@ -72,17 +72,19 @@ def status(user_id):
 
 
 def new_status(user_id):
+    db_session.global_init('db/photo-booth.sqlite')
+    session = db_session.create_session()
+    commentadmin = CommentAdmin(
+        admin=user_id,
+        comments=0
+    )
+    session.add(commentadmin)
+    session.commit()
     connection = sqlite3.connect('db/photo-booth.sqlite')
     cursor = connection.cursor()
     new_status = cursor.execute(f'''UPDATE users SET status=1 WHERE user_id="{user_id}"''').fetchall()
     connection.commit()
     connection.close()
-    db_session.global_init('db/photo-booth.sqlite')
-    session = db_session.create_session()
-    commnetadmin = CommentAdmin(
-        admin=user_id,
-        comments=0
-    )
 
 
 def if_code(code):
@@ -239,13 +241,24 @@ async def other_command(message: types.Message):
             connection = sqlite3.connect('db/photo-booth.sqlite')
             cursor = connection.cursor()
             comments = cursor.execute(f'''SELECT comment FROM comments''').fetchall()
-            quantity = cursor.execute(f'''SELECT comments FROM commentsadmins WHERE admin={user_id}''').fetchone()
-            connection.close()
-            db_session.global_init('db/photo-booth.sqlite')
+            quantity = int(cursor.execute(f'''SELECT comments FROM commentsadmins WHERE admin="{user_id}"''').fetchone()[0])
             if quantity == len(comments):
                 await message.reply('''Нет новых отзывов''')
-            elif :
-                pass
+            elif len(comments) - quantity < 5:
+                c = 1
+                for i in range(quantity, len(comments)):
+                    await bot.send_message(chat_id=user_id, text=f'''{c}) {comments[i][0]}''')
+                    c += 1
+                quantity = cursor.execute(f'''UPDATE commentsadmins SET comments=comments+{len(comments) - quantity} WHERE admin="{user_id}"''')
+            else:
+                c = 1
+                for i in range(quantity, quantity + 5):
+                    await bot.send_message(chat_id=user_id, text=f'''{c}) {comments[i][0]}''')
+                    c += 1
+                await bot.send_message(chat_id=user_id, text=f'''Еще новых отзывов: {len(comments) - quantity - 5}''')
+                quantity = cursor.execute(f'''UPDATE commentsadmins SET comments=comments+5 WHERE admin="{user_id}"''')
+            connection.commit()
+            connection.close()
         else:
             await message.reply('''Некорректный запрос''',
                                 reply_markup=markup)
@@ -263,6 +276,14 @@ async def other_command(message: types.Message):
         else:
             await message.reply('''Некорректный запрос''',
                                 reply_markup=markup)
+    elif text_message:
+        text_message = message.text
+        await mailing(message.text, user_id)
+    elif text_comment:
+        text_comment = message.text
+        await comment(message.text)
+        await message.reply('''Спасибо за отзыв!''',
+                            reply_markup=markup)
     elif message.text.isdigit():
         code = message.text
         if if_code(code):
@@ -271,12 +292,6 @@ async def other_command(message: types.Message):
         else:
             await message.reply('''Неверный код''',
                                 reply_markup=markup)
-    elif text_message:
-        text_message = message.text
-        await mailing(message.text, user_id)
-    elif text_comment:
-        text_comment = message.text
-        await comment(message.text)
     else:
         await message.reply('''Некорректный запрос''',
                             reply_markup=markup)
@@ -305,7 +320,7 @@ async def comment(message):
         comment=text_comment
     )
     session.add(comment)
-    session.close()
+    session.commit()
     text_comment = 0
 
 
