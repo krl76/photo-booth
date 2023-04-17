@@ -8,7 +8,7 @@ import datetime
 from random import choices
 
 from db_data import db_session
-from db_data.__all_models import Photo, User, PhotoUser, Statistics
+from db_data.__all_models import Photo, User, PhotoUser, Comment, CommentAdmin
 import sqlite3
 
 import threading
@@ -23,7 +23,7 @@ bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
 
 button_instruction = KeyboardButton('Инструкция')
-button_otzyv = KeyboardButton('Отзыв')
+button_comment = KeyboardButton('Отзыв')
 
 button_statistics_day = KeyboardButton('Статистика за день')
 button_statistics_week = KeyboardButton('Статистика за неделю')
@@ -31,19 +31,20 @@ button_send_message = KeyboardButton('Рассылка')
 button_admin_password = KeyboardButton('Пароль для админки')
 button_count_users = KeyboardButton('Количество пользователей')
 button_count_admins = KeyboardButton('Количество админов')
+button_comments = KeyboardButton('Отзывы')
 
 markup_user = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-markup_user.row(button_instruction, button_otzyv)
+markup_user.row(button_instruction, button_comment)
 
 markup_admin = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-markup_admin.add(button_instruction)
+markup_admin.row(button_instruction, button_comments)
 markup_admin.row(button_statistics_day, button_statistics_week)
 markup_admin.row(button_count_users, button_count_admins)
 markup_admin.row(button_send_message, button_admin_password)
 
 
 text_message = 0
-text_otzyv = 0
+text_comment = 0
 
 
 def new_user(user_id):
@@ -76,6 +77,12 @@ def new_status(user_id):
     new_status = cursor.execute(f'''UPDATE users SET status=1 WHERE user_id="{user_id}"''').fetchall()
     connection.commit()
     connection.close()
+    db_session.global_init('db/photo-booth.sqlite')
+    session = db_session.create_session()
+    commnetadmin = CommentAdmin(
+        admin=user_id,
+        comments=0
+    )
 
 
 def if_code(code):
@@ -165,7 +172,7 @@ async def start_command(message: types.Message):
 @dp.message_handler()
 async def other_command(message: types.Message):
     global text_message
-    global  text_otzyv
+    global text_comment
     global admin_password
     user_id = message.chat.id
     nu = new_user(user_id)
@@ -222,8 +229,23 @@ async def other_command(message: types.Message):
                                 reply_markup=markup)
     elif message.text == 'Отзыв':
         if st == 2:
-            text_otzyv = 1
+            text_comment = 1
             await message.reply('''Напишите отзыв''')
+        else:
+            await message.reply('''Некорректный запрос''',
+                                reply_markup=markup)
+    elif message.text == 'Отзывы':
+        if st == 1:
+            connection = sqlite3.connect('db/photo-booth.sqlite')
+            cursor = connection.cursor()
+            comments = cursor.execute(f'''SELECT comment FROM comments''').fetchall()
+            quantity = cursor.execute(f'''SELECT comments FROM commentsadmins WHERE admin={user_id}''').fetchone()
+            connection.close()
+            db_session.global_init('db/photo-booth.sqlite')
+            if quantity == len(comments):
+                await message.reply('''Нет новых отзывов''')
+            elif :
+                pass
         else:
             await message.reply('''Некорректный запрос''',
                                 reply_markup=markup)
@@ -252,9 +274,9 @@ async def other_command(message: types.Message):
     elif text_message:
         text_message = message.text
         await mailing(message.text, user_id)
-    elif text_otzyv:
-        text_otzyv = message.text
-        await otzyv(message.text)
+    elif text_comment:
+        text_comment = message.text
+        await comment(message.text)
     else:
         await message.reply('''Некорректный запрос''',
                             reply_markup=markup)
@@ -275,14 +297,16 @@ async def mailing(message, admin):
 
 
 @dp.message_handler()
-async def otzyv(message):
-    global text_otzyv
-    connection = sqlite3.connect('db/photo-booth.sqlite')
-    cursor = connection.cursor()
-    chats = cursor.execute(f'''SELECT user_id FROM users WHERE status=1''').fetchall()
-    for chat in chats:
-        await bot.send_message(chat_id=chat[0], text=message)
-    text_otzyv = 0
+async def comment(message):
+    global text_comment
+    db_session.global_init('db/photo-booth.sqlite')
+    session = db_session.create_session()
+    comment = Comment(
+        comment=text_comment
+    )
+    session.add(comment)
+    session.close()
+    text_comment = 0
 
 
 @dp.message_handler()
