@@ -7,7 +7,7 @@ const video = document.getElementById('video');
 const errorMsgElement = document.getElementById('span#ErrorMsg');
 const constraints = {
 video:{
-        width: 1080, height: 1920
+        width: 1920, height: 1080
       }
 };
 async function init(){
@@ -39,11 +39,8 @@ function timerload(t){
     console.log(t);
     if (t == 0){
         /*videoflash.classList.add('flash');*/
-        document.getElementById('timer').innerHTML = ''
-        setTimeout(() =>  timerload(t - 1));
-    }
-    else if(t == -1){
-        context.drawImage(video, 0, 0, 1080, 1920)
+        document.getElementById('timer').innerHTML = '';
+        context.drawImage(video, 0, 0, 1920, 1080)
         $.post("/send", {"image": canvas.toDataURL('image/png').split(',')[1]},
             function(data) {
             var json = $.parseJSON(data);
@@ -62,7 +59,7 @@ function timerload(t){
         });
     }
     else{
-        document.getElementById('timer').innerHTML = '<img src="/static/data/' + t + '_5.png" style="width: 20vw; height: 25vh;" class="img_timer_2" id="timer">'
+        document.getElementById('timer').innerHTML = '<img src="/static/data/' + t + '_5.png" style="width: 20vw; height: 15vh;" class="img_timer_2" id="timer">'
         setTimeout(() =>  timerload(t - 1), 1000);
     }
 };

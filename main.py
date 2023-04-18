@@ -137,9 +137,9 @@ def generate_code():
 #     print(admin_password)
 
 
-def start():
-    run_db()
-    app.run()
+# def start():
+    # run_db()
+    # app.run()
 
 
 def sch():
@@ -152,8 +152,10 @@ def sch():
 
 
 if __name__ == '__main__':
-    t1 = threading.Thread(target=start)
-    t2 = threading.Thread(target=sch)
+    # t1 = threading.Thread(target=start)
+    # t2 = threading.Thread(target=sch)
 
-    t1.start()
-    t2.start()
+    # t1.start()
+    # t2.start()
+    run_db()
+    app.run()
