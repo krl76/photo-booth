@@ -1,1 +1,111 @@
-@font-face{font-family:'YakumoPreschoolHand';src:url('/static/data/YakumoPreschoolHand.ttf')}html{overflow-y:hidden}h1{font-family:'YakumoPreschoolHand','Comic Sans MS'}@font-face{font-family:'Choplin-Book';src:url('/static/data/Choplin-Book.ttf')}h2{font-family:'Choplin-Book','Lucida Console'}video{transform:scaleX(-1);-o-transform:scaleX(-1);-ms-transform:scaleX(-1);-moz-transform:scaleX(-1);-webkit-transform:scaleX(-1)}.img-btn2{margin-top:2vh;width:19vw;height:12vh}.controller .img-btn2{cursor:pointer;transition-duration:.2s}.controller .img-btn2:hover{filter:brightness(80%);transition-duration:.2s}.go_back{position:absolute;margin-left:1vw;margin-top:1vh}.img-btn1{width:12vw;height:4vh}.go_back .img-btn1{cursor:pointer;transition-duration:.2s}.go_back .img-btn1:hover{filter:brightness(80%);transition-duration:.2s}.fake-img{opacity:0;position:absolute;top:-1vh;right:20vw;width:50vw;height:30vh}photo{position:absolute;margin-top:12vh;margin-left:6vw}.photo .photo_2{width:640px;height:480px;margin-top:8vh;margin-left:-30vw}.tg{position:absolute;top:15vh;right:10vw}.sentence_tg{margin-top:5vh}.sentence_code{position:absolute;right:13.5vw;top:30.5vh}.code_tg{color:red}.flash{opacity:1;-webkit-animation:flash 4s;animation:flash 4s}@-webkit-keyframes flash{0%{opacity:0}100%{opacity:1}}@keyframes flash{0%{opacity:0}100%{opacity:1}}.go_update{position:absolute;right:3vw;margin-top:1vh}.img-btn3{width:8vw;height:6vh}.go_update .img-btn3{cursor:pointer;transition-duration:.2s}.go_update .img-btn3:hover{filter:brightness(80%);transition-duration:.2s}.tg_bot{position:absolute;top:14vh;right:8vw}
+@font-face {
+font-family: 'YakumoPreschoolHand';
+src: url('/static/data/YakumoPreschoolHand.ttf');
+}
+html {
+overflow-y: hidden;
+}
+h1 {
+font-family: 'YakumoPreschoolHand', 'Comic Sans MS';
+}
+@font-face {
+font-family: 'Choplin-Book';
+src: url('/static/data/Choplin-Book.ttf');
+}
+h2 {
+font-family: 'Choplin-Book', 'Lucida Console';
+}
+video {
+transform: scaleX(-1);
+-o-transform: scaleX(-1);
+-ms-transform: scaleX(-1);
+-moz-transform: scaleX(-1);
+-webkit-transform: scaleX(-1);
+}
+.img-btn2 {
+margin-top: 2vh;
+width: 19vw;
+height: 12vh;
+}
+.controller .img-btn2 {
+cursor: pointer;
+transition-duration: 0.2s;
+}
+.controller .img-btn2:hover {
+filter: brightness(80%);
+transition-duration: 0.2s;
+}
+.go_back {
+position: absolute;
+margin-left: 1vw;
+margin-top: 1vh;
+}
+.img-btn1 {
+width: 12vw;
+height: 4vh;
+}
+.go_back .img-btn1 {
+cursor: pointer;
+transition-duration: 0.2s;
+}
+.go_back .img-btn1:hover {
+filter: brightness(80%);
+transition-duration: 0.2s;
+}
+.fake-img {
+opacity: 0;
+position: absolute;
+top: -1vh;
+right: 20vw;
+width: 50vw;
+height: 30vh;
+}
+photo {
+position: absolute;
+margin-top: 12vh;
+margin-left: 6vw;
+}
+.photo .photo_2 {
+width: 1000px;
+height: 562.5px;
+margin-top: 30vh;
+margin-left: 1vw;
+}
+.tg {
+position: absolute;
+top: 10vh;
+right: 40vw;
+}
+.sentence_tg {
+margin-top: 3vh;
+}
+.sentence_code {
+position: absolute;
+right: 18vw;
+top: 17vh;
+}
+.code_tg {
+color: red;
+}
+.go_update {
+position: absolute;
+right: 3vw;
+margin-top: 1vh;
+}
+.img-btn3 {
+width: 8vw;
+height: 6vh;
+}
+.go_update .img-btn3 {
+cursor: pointer;
+transition-duration: 0.2s;
+}
+.go_update .img-btn3:hover {
+filter: brightness(80%);
+transition-duration: 0.2s;
+}
+.tg_bot {
+position: absolute;
+top: 14vh;
+right: 12vw;
+}
