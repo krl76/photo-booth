@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Photobooth</title>
+    <link rel="shortcut icon" href="/static/data/icon.png" type="image/png">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/second.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/bootstrap/bootstrap.css') }}">
+
+</head>
+<body onmousedown="return false;" onclick="return true;" id='body'>
+    <div class="go_back" id="arrow">
+        <a href="/">
+        <img src="static/data/arrow.png" class="img-btn1">
+            </a>
+    </div>
+    <div class="go_update" id="update_arrow">
+    </div>
+    <form>
+        <div class="video-wrap" id="camera">
+            <center><video id="video" style="margin-top: 12vh; width: 90vw; height: 65vh;" playsinline autoplay></video></center>
+        </div>
+    </form>
+    <div id="button" class="controller">
+        <center><img src="static/data/default button.png" class="img-btn2" id="snap"></center>
+    </div>
+    <div class="fake-img" id="img">
+        <center><canvas id="canvas" style="width: 75vw; height: 75vh" width="1920" height="1080"></canvas></center>
+    </div>
+    <div class="sentence_tg">
+        <h1 id="text_tg"></h1>
+    </div>
+    <div class="sentence_code">
+        <h1 class="code_tg" id="code"></h1>
+    </div>
+    <!-- Модальное окно бездействия -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Бездействие</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть" id="upper_button_no"></button>
+          </div>
+          <div class="modal-body">
+              Завершить сеанс?
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="button_no">Нет(<span id="timedown"></span>)</button>
+            <button type="button" class="btn btn-primary" id="button_yes">Да</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Конец модального окна -->
+    <div class="img-timer" id="timer" style="position: absolute; z-index: 100; top: 5vh; left: 40vw;"></div>
+    <div class="tg" id="qr-code"></div>
+    <div class="tg_bot" id="bot_sentance"></div>
+    <script type="text/javascript" src="static/js/bootstrap/bootstrap.js"></script>
+    <script type="text/javascript" src="static/js/webcam.js"></script>
+    <script type="text/javascript" src="static/js/inaction.js"></script>
+</body>
+</html>

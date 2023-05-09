@@ -25,8 +25,6 @@ height: 70vh;
 background-size: cover;
 }
 .carousel {
-position: absolutely;
-height: 110vh;
 width: 80vw;
 margin-left: 11vw;
 margin-top: 12vh;
@@ -36,4 +34,7 @@ position: absolutely;
 }
 .carousel-inner {
 border: 3px solid black;
+}
+.qr-code{
+width: 90%;
 }
