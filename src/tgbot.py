@@ -94,19 +94,19 @@ def send_photo(user_id, code):
     statistics = cursor.execute(
         f'''UPDATE statistics SET count_send=count_send+1 WHERE photo="{path}"''').fetchall()
     users_photo = cursor.execute(f'''SELECT photo FROM photosusers WHERE user_id="{user_id}"''').fetchall()
-    if (code, ) in users_photo:
-        send = cursor.execute(f'''UPDATE photosusers SET time="{datetime.datetime.now()}"''')
-    else:
-        db_session.global_init('src/db/photo-booth.sqlite')
-        session = db_session.create_session()
-        photo = PhotoUser(
-            user_id=user_id,
-            photo=path,
-            time=datetime.datetime.now()
-        )
-        session.add(photo)
-        session.commit()
-    connection.commit()
+    # if (code, ) in users_photo:
+    #     send = cursor.execute(f'''UPDATE photosusers SET time="{datetime.datetime.now()}"''')
+    # else:
+    #     db_session.global_init('src/db/photo-booth.sqlite')
+    #     session = db_session.create_session()
+    #     photo = PhotoUser(
+    #         user_id=user_id,
+    #         photo=path,
+    #         # time=datetime.datetime.now()
+    #     )
+    #     session.add(photo)
+    #     session.commit()
+    # connection.commit()
     return path
 
 
@@ -161,7 +161,11 @@ def count_admins():
 def check_send(user_id, photo):
     connection = sqlite3.connect('src/db/photo-booth.sqlite')
     cursor = connection.cursor()
-    time = cursor.execute(f'''SELECT time FROM photosusers WHERE user_id="{user_id} AND photo="{photo}"''').fetchone()[0]
+    print(photo)
+    time = cursor.execute(f'''SELECT time FROM photosusers WHERE user_id="{user_id}" AND photo="{photo}"''').fetchone()
+    if not time:
+        return True
+    time = time[0]
     connection.close()
     if time < datetime.datetime.now() - datetime.timedelta(minutes=3):
         return True
@@ -298,7 +302,7 @@ async def other_command(message: types.Message):
         code = message.text
         if if_code(code):
             if check_send(user_id, code):
-                path = f'src/{send_photo(user_id, code)}'
+                path = f'{send_photo(user_id, code)}'
                 # await bot.send_photo(chat_id=user_id, photo=open(path, 'rb'))
                 await bot.send_document(chat_id=user_id, document=open(path, 'rb'))
                 # await bot.send_document(chat_id=user_id, document=open(path, 'rb'))
