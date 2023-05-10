@@ -39,6 +39,7 @@ transition-duration: 0.2s;
 position: absolute;
 margin-left: 1vw;
 margin-top: 1vh;
+z-index: 100;
 }
 .img-btn1 {
 width: 12vw;
@@ -56,7 +57,7 @@ transition-duration: 0.2s;
 opacity: 0;
 position: absolute;
 top: -1vh;
-right: 20vw;
+left: 20vw;
 width: 50vw;
 height: 30vh;
 }
