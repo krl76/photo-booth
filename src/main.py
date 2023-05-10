@@ -1,5 +1,6 @@
 import base64
 import datetime
+import io
 import json
 import sqlite3
 import uuid
@@ -37,12 +38,13 @@ def upload_image():
     try:
         file_name = uuid.uuid1()
         path = f'static/images/{file_name}.png'
-        with open(path, 'wb') as file2:
-            file2.write(base64.b64decode(request.form['image']))
+        # with open(path, 'wb') as file2:
+        #     file2.write(base64.b64decode(request.form['image']))
 
         # add ram
         fon = Image.open('static/img/frames/1.png')
-        image = Image.open(path).transpose(method=Transpose.FLIP_LEFT_RIGHT)
+        bf = io.BytesIO(base64.b64decode(request.form['image']))
+        image = Image.open(bf).transpose(method=Transpose.FLIP_LEFT_RIGHT)
         image.paste(fon, (0, 0), mask=fon)
         image.save(path)
         # end
