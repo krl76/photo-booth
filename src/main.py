@@ -9,6 +9,7 @@ import qrcode
 import requests
 import schedule
 from PIL import Image
+from PIL.Image import Transpose
 from flask import Flask, render_template, request
 
 from clear_db import delete_photos, delete_statistics
@@ -36,18 +37,12 @@ def upload_image():
     try:
         file_name = uuid.uuid1()
         path = f'static/images/{file_name}.png'
-        # with open('static/images/image.txt', 'w') as file:
-        #     img = request.form['image']
-        #     file.write(img)
-        # with open('static/images/image.txt', 'rb') as file:
         with open(path, 'wb') as file2:
-            # img_b64 = file.read()
             file2.write(base64.b64decode(request.form['image']))
 
         # add ram
-        fon = Image.open('static/fon.png')
-        image = Image.open(path)
-
+        fon = Image.open('static/img/frames/1.png')
+        image = Image.open(path).transpose(method=Transpose.FLIP_LEFT_RIGHT)
         image.paste(fon, (0, 0), mask=fon)
         image.save(path)
         # end
@@ -116,8 +111,7 @@ def get_posts():
             'colour': 'white' if flag else 'black'
         }
         posts.append(post)
-    return json.dumps({'success': 'ok',
-                       'data': posts})
+    return json.dumps({'success': 'ok', 'data': posts})
 
 
 def run_db():
