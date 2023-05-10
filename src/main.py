@@ -104,7 +104,7 @@ def get_posts():
     except Exception:
         return json.dumps({'error': 'Loading has been error'})
     posts = []
-    URL_LOGO = 'src/static/data/1357_logo.jpg'
+    URL_LOGO = '/static/data/1357_logo.jpg'
     for i in range(5):
         flag = False
         if 'attachments' in data[i]:
