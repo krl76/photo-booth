@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Photobooth</title>
-    <link rel="shortcut icon" href="/static/data/icon.png" type="image/png">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='/data/icon.png') }}" type="image/png">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/second.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/bootstrap/bootstrap.css') }}">
 
@@ -11,7 +11,7 @@
 <body onmousedown="return false;" onclick="return true;" id='body'>
     <div class="go_back" id="arrow">
         <a href="/">
-        <img src="static/data/arrow.png" class="img-btn1">
+        <img src="{{ url_for('static', filename='/data/arrow.png' }}" class="img-btn1">
             </a>
     </div>
     <div class="go_update" id="update_arrow">
@@ -55,8 +55,8 @@
     <div class="img-timer" id="timer" style="position: absolute; z-index: 100; top: 5vh; left: 40vw;"></div>
     <div class="tg" id="qr-code"></div>
     <div class="tg_bot" id="bot_sentance"></div>
-    <script type="text/javascript" src="static/js/bootstrap/bootstrap.js"></script>
-    <script type="text/javascript" src="static/js/webcam.js"></script>
-    <script type="text/javascript" src="static/js/inaction.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='/js/bootstrap/bootstrap.js' }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='/js/webcam.js' }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='/js/inaction.js' }}"></script>
 </body>
 </html>
