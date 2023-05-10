@@ -23,6 +23,7 @@ app = Flask(__name__, static_folder="static")
 app.debug = False
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# DB_FILE =
 
 admin_password = 'admin1357'
 
@@ -78,7 +79,7 @@ def qr_code():
         tgbot_name = 'photobooth1357_bot'
         tgbot_link = f'https://t.me/{tgbot_name}'
         tgbot_qr = qrcode.make(tgbot_link)
-        path_tgbot_qr = '/src/static/images/telegram-qrcode.png'
+        path_tgbot_qr = 'src/static/images/telegram-qrcode.png'
         tgbot_qr.save(path_tgbot_qr)
     except Exception:
         return json.dumps({'error': 'Loading has been error'})
@@ -103,7 +104,7 @@ def get_posts():
     except Exception:
         return json.dumps({'error': 'Loading has been error'})
     posts = []
-    URL_LOGO = '/src/static/data/1357_logo.jpg'
+    URL_LOGO = 'src/static/data/1357_logo.jpg'
     for i in range(5):
         flag = False
         if 'attachments' in data[i]:
