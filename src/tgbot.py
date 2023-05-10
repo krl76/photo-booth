@@ -298,7 +298,7 @@ async def other_command(message: types.Message):
         code = message.text
         if if_code(code):
             if check_send(user_id, code):
-                path = send_photo(user_id, code)
+                path = f'src/{send_photo(user_id, code)}'
                 # await bot.send_photo(chat_id=user_id, photo=open(path, 'rb'))
                 await bot.send_document(chat_id=user_id, document=open(path, 'rb'))
                 # await bot.send_document(chat_id=user_id, document=open(path, 'rb'))
