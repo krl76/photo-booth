@@ -14,6 +14,8 @@ TOKEN = '5436507493:AAFNMNTR9qJGWJ9YcBEYsYy-blIiHb07hr8'
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
 
+admin_password = 'admin1357'
+
 button_instruction = KeyboardButton('Инструкция')
 button_comment = KeyboardButton('Отзыв')
 
@@ -281,7 +283,8 @@ async def other_command(message: types.Message):
         code = message.text
         if if_code(code):
             path = send_photo(user_id, code)
-            await bot.send_photo(chat_id=user_id, photo=open(path, 'rb'))
+            # await bot.send_photo(chat_id=user_id, photo=open(path, 'rb'))
+            await bot.send_document(chat_id=user_id, document=open(path, 'rb'))
             # await bot.send_document(chat_id=user_id, document=open(path, 'rb'))
         else:
             await message.reply('''Неверный код''',
