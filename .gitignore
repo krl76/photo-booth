@@ -1,3 +1,4 @@
 /venv/
 /src/static/images/
 /src/db/photo-booth.sqlite
+/src/.env

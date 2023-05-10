@@ -19,10 +19,12 @@ $VIRTUALENV/bin/python3 src/main.py &
 
 sleep 5
 
-$VIRTUALENV/bin/python3 src/tgbot.py
+$VIRTUALENV/bin/python3 src/tgbot.py &
 
 set -e
+
 CHROMIUM_TEMP=~/tmp/chromium
+
 rm -Rf ~/.config/chromium/
 rm -Rf $CHROMIUM_TEMP
 mkdir -p $CHROMIUM_TEMP
