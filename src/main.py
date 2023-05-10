@@ -4,6 +4,7 @@ import io
 import json
 import os
 import sqlite3
+import threading
 import uuid
 from random import choices
 
@@ -40,12 +41,12 @@ def camera_screen():
 def upload_image():
     try:
         file_name = uuid.uuid1()
-        path = f'static/images/{file_name}.png'
+        path = f'src/static/images/{file_name}.png'
         # with open(path, 'wb') as file2:
         #     file2.write(base64.b64decode(request.form['image']))
 
         # add ram
-        fon = Image.open('static/img/frames/1.png')
+        fon = Image.open('src/static/img/frames/1.png')
         bf = io.BytesIO(base64.b64decode(request.form['image']))
         image = Image.open(bf).transpose(method=Transpose.FLIP_LEFT_RIGHT)
         image.paste(fon, (0, 0), mask=fon)
@@ -77,7 +78,7 @@ def qr_code():
         tgbot_name = 'photobooth1357_bot'
         tgbot_link = f'https://t.me/{tgbot_name}'
         tgbot_qr = qrcode.make(tgbot_link)
-        path_tgbot_qr = 'static/images/telegram-qrcode.png'
+        path_tgbot_qr = 'src/static/images/telegram-qrcode.png'
         tgbot_qr.save(path_tgbot_qr)
     except Exception:
         return json.dumps({'error': 'Loading has been error'})
@@ -102,7 +103,7 @@ def get_posts():
     except Exception:
         return json.dumps({'error': 'Loading has been error'})
     posts = []
-    URL_LOGO = 'static/data/1357_logo.jpg'
+    URL_LOGO = 'src/static/data/1357_logo.jpg'
     for i in range(5):
         flag = False
         if 'attachments' in data[i]:
@@ -159,7 +160,7 @@ def sch():
 if __name__ == '__main__':
     # t1 = threading.Thread(target=start)
     # t2 = threading.Thread(target=sch)
-
+    #
     # t1.start()
     # t2.start()
     run_db()
