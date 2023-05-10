@@ -93,15 +93,20 @@ def send_photo(user_id, code):
     path = cursor.execute(f'''SELECT photo FROM photos WHERE code="{code}"''').fetchone()[0]
     statistics = cursor.execute(
         f'''UPDATE statistics SET count_send=count_send+1 WHERE photo="{path}"''').fetchall()
+    users_photo = cursor.execute(f'''SELECT photo FROM photosusers WHERE user_id="{user_id}"''').fetchall()
+    if (code, ) in users_photo:
+        send = cursor.execute(f'''UPDATE photosusers SET time="{datetime.datetime.now()}"''')
+    else:
+        db_session.global_init('db/photo-booth.sqlite')
+        session = db_session.create_session()
+        photo = PhotoUser(
+            user_id=user_id,
+            photo=path,
+            time=datetime.datetime.now()
+        )
+        session.add(photo)
+        session.commit()
     connection.commit()
-    db_session.global_init('db/photo-booth.sqlite')
-    session = db_session.create_session()
-    photo = PhotoUser(
-        user_id=user_id,
-        photo=path
-    )
-    session.add(photo)
-    session.commit()
     return path
 
 
@@ -151,6 +156,16 @@ def count_admins():
     ca = len(cursor.execute(f'''SELECT id FROM users WHERE status=1''').fetchall())
     connection.close()
     return ca
+
+
+def check_send(user_id, photo):
+    connection = sqlite3.connect('db/photo-booth.sqlite')
+    cursor = connection.cursor()
+    time = cursor.execute(f'''SELECT time FROM photosusers WHERE user_id="{user_id} AND photo="{photo}"''').fetchone()[0]
+    connection.close()
+    if time < datetime.datetime.now() - datetime.timedelta(minutes=3):
+        return True
+    return False
 
 
 @dp.message_handler(commands=['start'])
@@ -282,10 +297,13 @@ async def other_command(message: types.Message):
     elif message.text.isdigit():
         code = message.text
         if if_code(code):
-            path = send_photo(user_id, code)
-            # await bot.send_photo(chat_id=user_id, photo=open(path, 'rb'))
-            await bot.send_document(chat_id=user_id, document=open(path, 'rb'))
-            # await bot.send_document(chat_id=user_id, document=open(path, 'rb'))
+            if check_send(user_id, code):
+                path = send_photo(user_id, code)
+                # await bot.send_photo(chat_id=user_id, photo=open(path, 'rb'))
+                await bot.send_document(chat_id=user_id, document=open(path, 'rb'))
+                # await bot.send_document(chat_id=user_id, document=open(path, 'rb'))
+            else:
+                await message.reply('''Файл уже был отправлен. Повторная отправка не меньше чем через 3 минуты.''')
         else:
             await message.reply('''Неверный код''',
                                 reply_markup=markup)
