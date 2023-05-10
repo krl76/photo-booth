@@ -2,6 +2,7 @@ import base64
 import datetime
 import io
 import json
+import os
 import sqlite3
 import uuid
 from random import choices
@@ -19,6 +20,8 @@ from db_data.__all_models import Photo, Statistics
 
 app = Flask(__name__, static_folder="static")
 app.debug = False
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 admin_password = 'admin1357'
 
@@ -117,12 +120,12 @@ def get_posts():
 
 
 def run_db():
-    db_session.global_init('db/photo-booth.sqlite')
+    db_session.global_init('src/db/photo-booth.sqlite')
 
 
 def generate_code():
     code = ''.join(choices('1234567890', k=6))
-    connection = sqlite3.connect('db/photo-booth.sqlite')
+    connection = sqlite3.connect(f'src/db/photo-booth.sqlite')
     cursor = connection.cursor()
     codes = cursor.execute(f'''SELECT code FROM photos''').fetchall()
     if (code,) in codes:
