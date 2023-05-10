@@ -44,11 +44,11 @@ function timerload(t){
             $.get("/qr",
                 function(data) {
                 var json = $.parseJSON(data);
-                document.getElementById('qr-code').innerHTML = '<center><img src="' + json.tglink + '" style="width: 28vw; height: 18vh"></center>'
+                document.getElementById('qr-code').innerHTML = '<center><img src="/static/images/telegram-qrcode.png" style="width: 28vw; height: 18vh"></center>'
             });
-            document.getElementById('arrow').innerHTML = '<img src="static/data/arrow.png" class="img-btn1" id="back">'
-            document.getElementById('update_arrow').innerHTML = '<img src="static/data/update_arrow.png" class="img-btn3" id="update">'
-            document.querySelector('form').innerHTML = '<div class="photo"><center><img src="' + json.img + '"class="photo_2"></center></div>'
+            document.getElementById('arrow').innerHTML = '<img src="/static/data/arrow.png" class="img-btn1" id="back">'
+            document.getElementById('update_arrow').innerHTML = '<img src="/static/data/update_arrow.png" class="img-btn3" id="update">'
+            document.querySelector('form').innerHTML = '<div class="photo"><center><img src="/static/images/' + json.img + '"class="photo_2"></center></div>'
             document.getElementById('text_tg').innerHTML = '<center><h1 style="font-size: 4vw;">Через нашего телеграм бота вы сможете скачать вашу фотографию по указанному номеру</h1><h1 style="font-size: 2vw;">Если вы хотите вернуться на главный экран нажмите на стрелочку в левом верхнем углу</h1><h1 style="font-size: 2vw;">Если вы хотите сделать еще одну фотографию нажмите на стрелочку в правом верхнем углу</h1><h1 style="font-size: 2vw;">Спасибо, что пользуетесь нашей фотобудкой!</h1></center>'
             document.getElementById('code').innerHTML = '<h2 style="font-size: 7.5vw;">' + json.code + '</h2>'
             document.getElementById('bot_sentance').innerHTML = '<h2 style="font-size: 4vw;">@photobooth1357_bot</h2>'

@@ -70,7 +70,7 @@ def upload_image():
         session.commit()
     except Exception:
         return json.dumps({'error': 'Loading has been error'})
-    return json.dumps({'success': 'ok', 'img': path, 'code': code})
+    return json.dumps({'success': 'ok', 'img': f'{file_name}.png', 'code': code})
 
 
 @app.route("/qr", methods=["GET"])
