@@ -61,10 +61,6 @@ function timerload(t){
     }
 };
 
-arrow.addEventListener('click', function(){
-        history.back();
-});
-
 update_arrow.addEventListener('click', function(){
         location.reload();
 });
