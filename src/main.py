@@ -3,8 +3,8 @@ import datetime
 import io
 import json
 import os
-import sqlite3
 import threading
+import time
 import uuid
 from random import choices
 
@@ -13,17 +13,15 @@ import requests
 import schedule
 from PIL import Image
 from PIL.Image import Transpose
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for
 
 from clear_db import delete_photos, delete_statistics
 from db_data import db_session
 from db_data.__all_models import Photo, Statistics
+from settings import DB_NAME, BASE_DIR
 
 app = Flask(__name__, static_folder="static")
 app.debug = False
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-# DB_FILE =
 
 admin_password = 'admin1357'
 
@@ -42,16 +40,15 @@ def camera_screen():
 def upload_image():
     try:
         file_name = uuid.uuid1()
-        path = f'src/static/images/{file_name}.png'
-        # with open(path, 'wb') as file2:
-        #     file2.write(base64.b64decode(request.form['image']))
+        path = os.path.join(BASE_DIR, 'static', 'images', f'{file_name}.png')
 
-        # add ram
-        fon = Image.open('src/static/img/frames/1.png')
+        fon = Image.open(os.path.join(BASE_DIR, 'static', 'img', 'frames', f'1.png'))
         bf = io.BytesIO(base64.b64decode(request.form['image']))
         image = Image.open(bf).transpose(method=Transpose.FLIP_LEFT_RIGHT)
         image.paste(fon, (0, 0), mask=fon)
         image.save(path)
+        image.close()
+        fon.close()
         # end
         session = db_session.create_session()
         code = generate_code()
@@ -68,7 +65,8 @@ def upload_image():
         )
         session.add(statistics)
         session.commit()
-    except Exception:
+    except Exception as ex:
+        print(ex)
         return json.dumps({'error': 'Loading has been error'})
     return json.dumps({'success': 'ok', 'img': f'{file_name}.png', 'code': code})
 
@@ -103,8 +101,9 @@ def get_posts():
         data = response.json()['response']['items']
     except Exception:
         return json.dumps({'error': 'Loading has been error'})
+
     posts = []
-    URL_LOGO = '/static/data/1357_logo.jpg'
+    URL_LOGO = url_for('static', filename='data/1357_logo.jpg')
     for i in range(5):
         flag = False
         if 'attachments' in data[i]:
@@ -122,20 +121,16 @@ def get_posts():
 
 
 def run_db():
-    db_session.global_init('src/db/photo-booth.sqlite')
+    db_session.global_init(DB_NAME)
 
 
 def generate_code():
     code = ''.join(choices('1234567890', k=6))
-    connection = sqlite3.connect(f'src/db/photo-booth.sqlite')
-    cursor = connection.cursor()
-    codes = cursor.execute(f'''SELECT code FROM photos''').fetchall()
-    if (code,) in codes:
-        connection.close()
-        return generate_code()
-    else:
-        connection.close()
-        return code
+    db_sess = db_session.create_session()
+    codes = [el[0] for el in db_sess.query(Photo.code).all()]
+    while code in codes:
+        code = ''.join(choices('1234567890', k=6))
+    return code
 
 
 # def change_password():
@@ -144,25 +139,26 @@ def generate_code():
 #     print(admin_password)
 
 
-# def start():
-# run_db()
-# app.run()
+def start():
+    run_db()
+    app.run()
 
 
 def sch():
     schedule.every().minutes.do(delete_photos)
     schedule.every().day.at('00:00').do(delete_statistics)
     # schedule.every().day.at('23:40').do(change_password)
-    schedule.every(3).hours.do(get_posts)
+    schedule.every(1).hours.do(get_posts)
     while True:
         schedule.run_pending()
+        time.sleep(1)
 
 
 if __name__ == '__main__':
-    # t1 = threading.Thread(target=start)
-    # t2 = threading.Thread(target=sch)
-    #
-    # t1.start()
-    # t2.start()
-    run_db()
-    app.run()
+    t1 = threading.Thread(target=start)
+    t2 = threading.Thread(target=sch)
+
+    t1.start()
+    t2.start()
+    # run_db()
+    # app.run()
