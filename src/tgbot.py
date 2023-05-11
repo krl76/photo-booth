@@ -45,14 +45,7 @@ def new_user(user_id):
     cursor = connection.cursor()
     users_id = cursor.execute(f'''SELECT user_id FROM users''').fetchall()
     if (user_id,) not in users_id:
-        db_session.global_init('src/db/photo-booth.sqlite')
-        session = db_session.create_session()
-        new_user = User(
-            user_id=user_id
-        )
-        session.add(new_user)
-        session.commit()
-
+        new = cursor.execute(f'''INSERT INTO users (user_id) VALUES ("{user_id}")''')
     connection.close()
 
 
@@ -65,17 +58,10 @@ def status(user_id):
 
 
 def new_status(user_id):
-    db_session.global_init('src/db/photo-booth.sqlite')
-    session = db_session.create_session()
-    commentadmin = CommentAdmin(
-        admin=user_id,
-        comments=0
-    )
-    session.add(commentadmin)
-    session.commit()
     connection = sqlite3.connect('src/db/photo-booth.sqlite')
     cursor = connection.cursor()
-    new_status = cursor.execute(f'''UPDATE users SET status=1 WHERE user_id="{user_id}"''').fetchall()
+    new = cursor.execute(f'''UPDATE users SET status=1 WHERE user_id="{user_id}"''').fetchall()
+    commentadmin = cursor.execute(f'''INSERT INTO commentsadmins (admin, comments) VALUES ("{user_id}", 0)''')
     connection.commit()
     connection.close()
 
@@ -94,19 +80,11 @@ def send_photo(user_id, code):
     statistics = cursor.execute(
         f'''UPDATE statistics SET count_send=count_send+1 WHERE photo="{path}"''').fetchall()
     users_photo = cursor.execute(f'''SELECT photo FROM photosusers WHERE user_id="{user_id}"''').fetchall()
-    # if (code, ) in users_photo:
-    #     send = cursor.execute(f'''UPDATE photosusers SET time="{datetime.datetime.now()}"''')
-    # else:
-    #     db_session.global_init('src/db/photo-booth.sqlite')
-    #     session = db_session.create_session()
-    #     photo = PhotoUser(
-    #         user_id=user_id,
-    #         photo=path,
-    #         # time=datetime.datetime.now()
-    #     )
-    #     session.add(photo)
-    #     session.commit()
-    # connection.commit()
+    if (code, ) in users_photo:
+        send = cursor.execute(f'''UPDATE photosusers SET time="{datetime.datetime.now()}"''')
+    else:
+        new = cursor.execute(f'''INSERT INTO photosusers (user_id, photo, time) VALUES ("{user_id}", "{path}", "{datetime.datetime.now()}")''')
+    connection.commit()
     return path
 
 
