@@ -9,6 +9,8 @@ from aiogram.utils import executor
 from db_data import db_session
 from db_data.__all_models import Photo, User, PhotoUser, Comment, CommentAdmin
 
+from settings import DB_NAME
+
 TOKEN = '5436507493:AAFNMNTR9qJGWJ9YcBEYsYy-blIiHb07hr8'
 
 bot = Bot(token=TOKEN)
@@ -41,24 +43,31 @@ text_comment = 0
 
 
 def new_user(user_id):
-    connection = sqlite3.connect('src/db/photo-booth.sqlite')
+    connection = sqlite3.connect(DB_NAME)
     cursor = connection.cursor()
     users_id = cursor.execute(f'''SELECT user_id FROM users''').fetchall()
-    if (user_id,) not in users_id:
-        new = cursor.execute(f'''INSERT INTO users (user_id) VALUES ("{user_id}")''')
     connection.close()
+    if (user_id,) not in users_id:
+        db_session.global_init(DB_NAME)
+        session = db_session.create_session()
+        nu = User(
+            user_id=user_id
+        )
+        session.add(nu)
+        session.commit()
+        session.close()
 
 
 def status(user_id):
-    connection = sqlite3.connect('src/db/photo-booth.sqlite')
+    connection = sqlite3.connect(DB_NAME)
     cursor = connection.cursor()
-    status = int(cursor.execute(f'''SELECT status FROM users WHERE user_id="{user_id}"''').fetchone()[0])
+    st = int(cursor.execute(f'''SELECT status FROM users WHERE user_id="{user_id}"''').fetchone()[0])
     connection.close()
-    return status
+    return st
 
 
 def new_status(user_id):
-    connection = sqlite3.connect('src/db/photo-booth.sqlite')
+    connection = sqlite3.connect(DB_NAME)
     cursor = connection.cursor()
     new = cursor.execute(f'''UPDATE users SET status=1 WHERE user_id="{user_id}"''').fetchall()
     commentadmin = cursor.execute(f'''INSERT INTO commentsadmins (admin, comments) VALUES ("{user_id}", 0)''')
@@ -67,20 +76,20 @@ def new_status(user_id):
 
 
 def if_code(code):
-    db_session.global_init('src/db/photo-booth.sqlite')
+    db_session.global_init(DB_NAME)
     session = db_session.create_session()
     return session.query(Photo).filter(Photo.code == code).first()
 
 
 def send_photo(user_id, code):
-    connection = sqlite3.connect('src/db/photo-booth.sqlite')
+    connection = sqlite3.connect(DB_NAME)
     cursor = connection.cursor()
     user = cursor.execute(f'''UPDATE users SET count_photo=count_photo+1 WHERE user_id="{user_id}"''').fetchall()
     path = cursor.execute(f'''SELECT photo FROM photos WHERE code="{code}"''').fetchone()[0]
     statistics = cursor.execute(
         f'''UPDATE statistics SET count_send=count_send+1 WHERE photo="{path}"''').fetchall()
     users_photo = cursor.execute(f'''SELECT photo FROM photosusers WHERE user_id="{user_id}"''').fetchall()
-    if (code, ) in users_photo:
+    if (path, ) in users_photo:
         send = cursor.execute(f'''UPDATE photosusers SET time="{datetime.datetime.now()}"''')
     else:
         new = cursor.execute(f'''INSERT INTO photosusers (user_id, photo, time) VALUES ("{user_id}", "{path}", "{datetime.datetime.now()}")''')
@@ -89,7 +98,7 @@ def send_photo(user_id, code):
 
 
 def make_statictics_day():
-    connection = sqlite3.connect('src/db/photo-booth.sqlite')
+    connection = sqlite3.connect(DB_NAME)
     cursor = connection.cursor()
     make_day = len(cursor.execute(
         f'''SELECT photo FROM statistics WHERE time>"{datetime.datetime.now() - datetime.timedelta(days=1)}"''').fetchall())
@@ -101,7 +110,7 @@ def make_statictics_day():
 
 
 def make_statictics_week():
-    connection = sqlite3.connect('src/db/photo-booth.sqlite')
+    connection = sqlite3.connect(DB_NAME)
     cursor = connection.cursor()
     make_week = len(cursor.execute(
         f'''SELECT photo FROM statistics WHERE time>"{datetime.datetime.now() - datetime.timedelta(weeks=1)}"''').fetchall())
@@ -113,7 +122,7 @@ def make_statictics_week():
 
 
 def last_using(user_id):
-    connection = sqlite3.connect('src/db/photo-booth.sqlite')
+    connection = sqlite3.connect(DB_NAME)
     cursor = connection.cursor()
     last_using = cursor.execute(
         f'''UPDATE users SET date_last_using="{datetime.datetime.now()}" WHERE user_id="{user_id}"''').fetchall()
@@ -121,7 +130,7 @@ def last_using(user_id):
 
 
 def count_users():
-    connection = sqlite3.connect('src/db/photo-booth.sqlite')
+    connection = sqlite3.connect(DB_NAME)
     cursor = connection.cursor()
     cu = len(cursor.execute(f'''SELECT id FROM users WHERE status=2''').fetchall())
     connection.close()
@@ -129,7 +138,7 @@ def count_users():
 
 
 def count_admins():
-    connection = sqlite3.connect('src/db/photo-booth.sqlite')
+    connection = sqlite3.connect(DB_NAME)
     cursor = connection.cursor()
     ca = len(cursor.execute(f'''SELECT id FROM users WHERE status=1''').fetchall())
     connection.close()
@@ -137,7 +146,7 @@ def count_admins():
 
 
 def check_send(user_id, photo):
-    connection = sqlite3.connect('src/db/photo-booth.sqlite')
+    connection = sqlite3.connect(DB_NAME)
     cursor = connection.cursor()
     print(photo)
     time = cursor.execute(f'''SELECT time FROM photosusers WHERE user_id="{user_id}" AND photo="{photo}"''').fetchone()
@@ -228,7 +237,7 @@ async def other_command(message: types.Message):
                                 reply_markup=markup)
     elif message.text == 'Отзывы':
         if st == 1:
-            connection = sqlite3.connect('src/db/photo-booth.sqlite')
+            connection = sqlite3.connect(DB_NAME)
             cursor = connection.cursor()
             comments = cursor.execute(f'''SELECT comment FROM comments''').fetchall()
             quantity = int(
@@ -297,7 +306,7 @@ async def other_command(message: types.Message):
 @dp.message_handler()
 async def mailing(message, admin):
     global text_message
-    connection = sqlite3.connect('src/db/photo-booth.sqlite')
+    connection = sqlite3.connect(DB_NAME)
     cursor = connection.cursor()
     chats = cursor.execute(f'''SELECT user_id FROM users''').fetchall()
     for chat in chats:
@@ -311,7 +320,7 @@ async def mailing(message, admin):
 @dp.message_handler()
 async def comment(message):
     global text_comment
-    db_session.global_init('src/db/photo-booth.sqlite')
+    db_session.global_init(DB_NAME)
     session = db_session.create_session()
     comment = Comment(
         comment=text_comment
@@ -323,7 +332,7 @@ async def comment(message):
 
 @dp.message_handler()
 def reminder():
-    connection = sqlite3.connect('src/db/photo-booth.sqlite')
+    connection = sqlite3.connect(DB_NAME)
     cursor = connection.cursor()
     users = cursor.execute(
         f'''SELECT user_id FROM users WHERE date_last_using<"{datetime.datetime.now() - datetime.timedelta(minutes=1)}"''').fetchall()

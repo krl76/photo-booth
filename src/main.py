@@ -65,6 +65,7 @@ def upload_image():
         )
         session.add(statistics)
         session.commit()
+        session.close()
     except Exception as ex:
         print(ex)
         return json.dumps({'error': 'Loading has been error'})
@@ -126,10 +127,11 @@ def run_db():
 
 def generate_code():
     code = ''.join(choices('1234567890', k=6))
-    db_sess = db_session.create_session()
-    codes = [el[0] for el in db_sess.query(Photo.code).all()]
+    session = db_session.create_session()
+    codes = [el[0] for el in session.query(Photo.code).all()]
     while code in codes:
         code = ''.join(choices('1234567890', k=6))
+    session.close()
     return code
 
 
