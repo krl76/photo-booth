@@ -221,13 +221,13 @@ async def other_command(message: types.Message):
         else:
             await message.reply('''Некорректный запрос''',
                                 reply_markup=markup)
-    elif message.text == 'Рассылка':
-        if st == 1:
-            text_message = 1
-            await message.reply('''Введите текст для рассылки''')
-        else:
-            await message.reply('''Некорректный запрос''',
-                                reply_markup=markup)
+    # elif message.text == 'Рассылка':
+    #     if st == 1:
+    #         text_message = 1
+    #         await message.reply('''Введите текст для рассылки''')
+    #     else:
+    #         await message.reply('''Некорректный запрос''',
+    #                             reply_markup=markup)
     elif message.text == 'Отзыв':
         if st == 2:
             text_comment = 1
@@ -277,9 +277,9 @@ async def other_command(message: types.Message):
         else:
             await message.reply('''Некорректный запрос''',
                                 reply_markup=markup)
-    elif text_message:
-        text_message = message.text
-        await mailing(message.text, user_id)
+    # elif text_message:
+    #     text_message = message.text
+    #     await mailing(message.text, user_id)
     elif text_comment:
         text_comment = message.text
         await comment(message.text)
