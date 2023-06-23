@@ -11,7 +11,7 @@ from db_data.__all_models import Photo, User, PhotoUser, Comment, CommentAdmin
 
 from settings import DB_NAME
 
-TOKEN = '6108678168:AAGp-lLOS7vcMmL939h63hfES49OmRXK4Iw'
+TOKEN = '6108678168:AAGsHQQ1vuiHQdvTkpPGV1RMjEwplefJByg'
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
