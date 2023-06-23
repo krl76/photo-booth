@@ -23,7 +23,7 @@ from settings import DB_NAME, BASE_DIR
 app = Flask(__name__, static_folder="static")
 app.debug = False
 
-admin_password = 'admin1357'
+admin_password = 'admin1357!!!'
 
 
 @app.route("/")
@@ -42,7 +42,7 @@ def upload_image():
         file_name = uuid.uuid1()
         path = os.path.join(BASE_DIR, 'static', 'images', f'{file_name}.png')
 
-        fon = Image.open(os.path.join(BASE_DIR, 'static', 'img', 'frames', f'1.png'))
+        fon = Image.open(os.path.join(BASE_DIR, 'static', 'img', 'frames', f'2.png'))
         bf = io.BytesIO(base64.b64decode(request.form['image']))
         image = Image.open(bf).transpose(method=Transpose.FLIP_LEFT_RIGHT)
         image.paste(fon, (0, 0), mask=fon)
@@ -75,13 +75,13 @@ def upload_image():
 @app.route("/qr", methods=["GET"])
 def qr_code():
     try:
-        tgbot_name = 'photobooth1357_bot'
+        tgbot_name = 'PhotoKiosk1357Bot'
         tgbot_link = f'https://t.me/{tgbot_name}'
         tgbot_qr = qrcode.make(tgbot_link)
         path_tgbot_qr = 'src/static/images/telegram-qrcode.png'
         tgbot_qr.save(path_tgbot_qr)
     except Exception:
-        return json.dumps({'error': 'Loading has been error'})
+        return json.dumps({'error': 'Loadng has been error'})
     return json.dumps({'success': 'ok', 'tglink': path_tgbot_qr})
 
 
@@ -105,10 +105,11 @@ def get_posts():
 
     posts = []
     URL_LOGO = url_for('static', filename='data/1357_logo.jpg')
-    for i in range(5):
+    for i in range(3):
         flag = False
-        if 'attachments' in data[i]:
+        if 'attachments' in data[i] and len(data[i]['attachments']) > 0:
             if 'photo' in data[i]['attachments'][0]:
+                print(data[i]['attachments'][0])
                 photo = data[i]['attachments'][0]['photo']['sizes'][2]
                 if photo['width'] > photo['height'] >= 400 and photo['width'] >= 600:
                     flag = True

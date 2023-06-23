@@ -11,12 +11,12 @@ from db_data.__all_models import Photo, User, PhotoUser, Comment, CommentAdmin
 
 from settings import DB_NAME
 
-TOKEN = '5436507493:AAFNMNTR9qJGWJ9YcBEYsYy-blIiHb07hr8'
+TOKEN = '6108678168:AAGp-lLOS7vcMmL939h63hfES49OmRXK4Iw'
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
 
-admin_password = 'admin1357'
+admin_password = 'admin1357!!!'
 
 button_instruction = KeyboardButton('Инструкция')
 button_comment = KeyboardButton('Отзыв')
