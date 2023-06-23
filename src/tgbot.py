@@ -23,7 +23,7 @@ button_comment = KeyboardButton('Отзыв')
 
 button_statistics_day = KeyboardButton('Статистика за день')
 button_statistics_week = KeyboardButton('Статистика за неделю')
-button_send_message = KeyboardButton('Рассылка')
+# button_send_message = KeyboardButton('Рассылка')
 button_admin_password = KeyboardButton('Пароль для админки')
 button_count_users = KeyboardButton('Количество пользователей')
 button_count_admins = KeyboardButton('Количество админов')
@@ -36,7 +36,7 @@ markup_admin = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
 markup_admin.row(button_instruction, button_comments)
 markup_admin.row(button_statistics_day, button_statistics_week)
 markup_admin.row(button_count_users, button_count_admins)
-markup_admin.row(button_send_message, button_admin_password)
+# markup_admin.row(button_send_message, button_admin_password)
 
 text_message = 0
 text_comment = 0

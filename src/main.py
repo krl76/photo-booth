@@ -78,7 +78,7 @@ def qr_code():
         tgbot_name = 'PhotoKiosk1357Bot'
         tgbot_link = f'https://t.me/{tgbot_name}'
         tgbot_qr = qrcode.make(tgbot_link)
-        path_tgbot_qr = 'src/static/images/telegram-qrcode.png'
+        path_tgbot_qr = 'src/static/images/qr-code-tg-bot.png'
         tgbot_qr.save(path_tgbot_qr)
     except Exception:
         return json.dumps({'error': 'Loadng has been error'})

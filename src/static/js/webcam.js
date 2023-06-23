@@ -44,7 +44,7 @@ function timerload(t){
             $.get("/qr",
                 function(data) {
                 var json = $.parseJSON(data);
-                document.getElementById('qr-code').innerHTML = '<center><img src="/static/images/telegram-qrcode.png" style="width: 28vw; height: 18vh"></center>'
+                document.getElementById('qr-code').innerHTML = '<center><img src="/static/img/qr-code-tg-bot.png" style="width: 28vw; height: 18vh"></center>'
             });
             document.getElementById('arrow').innerHTML = '<img src="/static/data/arrow.png" class="img-btn1" id="back">'
             document.getElementById('update_arrow').innerHTML = '<img src="/static/data/update_arrow.png" class="img-btn3" id="update">'
