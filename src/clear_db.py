@@ -27,6 +27,7 @@ def delete_statistics():
     connection.commit()
     connection.close()
 
+
 if __name__ == '__main__':
     delete_photos()
     # delete_statistics()
