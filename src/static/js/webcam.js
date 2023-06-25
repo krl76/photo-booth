@@ -36,7 +36,6 @@ snap.addEventListener('click', function(){
 function timerload(t){
     console.log(t);
     if (t == 0){
-        document.getElementById('timer').innerHTML = '';
         context.drawImage(video, 0, 0, 1920, 1080);
         document.getElementById('timer').innerHTML = '<img src="/static/data/loading.gif" style="width: 20vw; height: 15vh;" class="img_timer_2" id="timer">'
         $.post("/send", {"image": canvas.toDataURL('image/png').split(',')[1]},

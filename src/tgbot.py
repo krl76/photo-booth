@@ -166,7 +166,7 @@ async def start_command(message: types.Message):
     st = status(user_id)
     markup = markup_admin if st == 1 else markup_user
     await message.reply('''Добро пожаловать!)
-Для получения фотографии отправьте код, указанный на экране фотобудки''',
+Для получения фотографии отправьте код, указанный на экране фотокиоска''',
                         reply_markup=markup)
 
 
@@ -181,9 +181,9 @@ async def other_command(message: types.Message):
     markup = markup_admin if st == 1 else markup_user
     lu = last_using(user_id)
     if message.text == 'Инструкция':
-        await message.reply(f'''1. Сфотографируйтесь в фотобудке школы №1357
+        await message.reply(f'''1. Сфотографируйтесь в фотокиоске школы №1357
 2. Отправьте код, указанный на экране
-3. Через 15 минут фотография удалится из памяти фотобудки''',
+3. Через 15 минут фотография удалится из памяти фотокиоска''',
                             reply_markup=markup)
     elif message.text == admin_password:
         if st == 1:

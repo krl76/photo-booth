@@ -109,7 +109,6 @@ def get_posts():
         flag = False
         if 'attachments' in data[i] and len(data[i]['attachments']) > 0:
             if 'photo' in data[i]['attachments'][0]:
-                print(data[i]['attachments'][0])
                 photo = data[i]['attachments'][0]['photo']['sizes'][2]
                 if photo['width'] > photo['height'] >= 400 and photo['width'] >= 600:
                     flag = True
