@@ -37,7 +37,8 @@ function timerload(t){
     console.log(t);
     if (t == 0){
         document.getElementById('timer').innerHTML = '';
-        context.drawImage(video, 0, 0, 1920, 1080)
+        context.drawImage(video, 0, 0, 1920, 1080);
+        document.getElementById('timer').innerHTML = '<img src="/static/data/loading.gif" style="width: 20vw; height: 15vh;" class="img_timer_2" id="timer">'
         $.post("/send", {"image": canvas.toDataURL('image/png').split(',')[1]},
             function(data) {
             var json = $.parseJSON(data);
@@ -46,6 +47,7 @@ function timerload(t){
                 var json = $.parseJSON(data);
                 document.getElementById('qr-code').innerHTML = '<center><img src="/static/img/qr-code-tg-bot.png" style="width: 28vw; height: 18vh"></center>'
             });
+            document.getElementById('timer').innerHTML = ''
             document.getElementById('arrow').innerHTML = '<img src="/static/data/arrow.png" class="img-btn1" id="back">'
             document.getElementById('update_arrow').innerHTML = '<img src="/static/data/update_arrow.png" class="img-btn3" id="update">'
             document.querySelector('form').innerHTML = '<div class="photo"><center><img src="/static/images/' + json.img + '"class="photo_2"></center></div>'
