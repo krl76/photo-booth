@@ -42,7 +42,7 @@ def upload_image():
         file_name = uuid.uuid1()
         path = os.path.join(BASE_DIR, 'static', 'images', f'{file_name}.png')
 
-        fon = Image.open(os.path.join(BASE_DIR, 'static', 'img', 'frames', f'2.png'))
+        fon = Image.open(os.path.join(BASE_DIR, 'static', 'img', 'frames', f'1.png'))
         bf = io.BytesIO(base64.b64decode(request.form['image']))
         image = Image.open(bf).transpose(method=Transpose.FLIP_LEFT_RIGHT)
         image.paste(fon, (0, 0), mask=fon)
